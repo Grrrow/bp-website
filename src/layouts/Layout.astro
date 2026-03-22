@@ -1,23 +1,117 @@
+---
+import '../styles/global.css';
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+	title: string;
+	lang: 'es' | 'en';
+	description?: string;
+	image?: string;
+}
+
+const { title, lang, description = "Soprano Berna Perles", image = "/default-og.png" } = Astro.props;
+const t = useTranslations(lang);
+
+const storyblokApi = useStoryblokApi();
+let globalConfig = null;
+
+try {
+  const { data } = await storyblokApi.get(`cdn/stories/configuracion-general`, {
+    version: 'draft',
+    language: lang === 'es' ? 'default' : lang,
+  });
+  globalConfig = data.story;
+} catch (error) {
+  console.log("Layout: Error fetching global config. Please verify STORYBLOK_TOKEN.");
+}
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Astro.url.pathname === '/en/' || Astro.url.pathname === '/home' || Astro.url.pathname === '/en/home';
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		
+		<!-- SEO & Open Graph Tags -->
+		<title>{title}</title>
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		{image && <meta property="og:image" content={image} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{image && <meta name="twitter:image" content={image} />}
 	</head>
 	<body>
-		<slot />
+    {globalConfig ? (
+      <>
+        {globalConfig.content.header?.map((headerBlok: any) => (
+          <StoryblokComponent blok={headerBlok} />
+        ))}
+        
+        <main class:list={{ 'pt-header': !isHome }}>
+          <slot />
+        </main>
+
+        {globalConfig.content.footer?.map((footerBlok: any) => (
+          <StoryblokComponent blok={footerBlok} />
+        ))}
+      </>
+    ) : (
+      <>
+        <header class="fallback-header glass">
+          <div class="actions">
+            <a href={lang === 'es' ? '/' : '/en'} class="logo">Berna Perles</a>
+            <LanguagePicker />
+          </div>
+        </header>
+        <main class:list={{ 'pt-header': !isHome }}>
+          <slot />
+        </main>
+      </>
+    )}
 	</body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  .fallback-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--color-surface-high);
+  }
+  .actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+    letter-spacing: 0.1em;
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+  main {
+    /* No max-width here so hero sections can be full width. 
+       Components should handle their own internal container padding/max-width. */
+    width: 100%;
+  }
+  .pt-header {
+    padding-top: 80px; /* Spacer for the absolute header on non-hero pages */
+  }
 </style>

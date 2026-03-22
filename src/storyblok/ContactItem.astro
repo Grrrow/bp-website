@@ -1,0 +1,86 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+
+const isEmail = blok.icon_type === 'email'
+const isPhone = blok.icon_type === 'phone'
+const isUser = blok.icon_type === 'user'
+
+const hrefUrl = blok.link?.cached_url || blok.link?.url
+
+let href = hrefUrl;
+if (!hrefUrl || hrefUrl === "") {
+  if (isEmail) href = `mailto:${blok.content}`;
+  // Ensure valid phone link by stripping spaces
+  if (isPhone) href = `tel:${blok.content.replace(/\s+/g, '')}`; 
+}
+---
+
+<li {...storyblokEditable(blok)} class="contact-item">
+  <div class="icon-wrapper">
+    {isUser && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    )}
+    {isEmail && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+        <path d="M2 4l10 8 10-8"></path>
+      </svg>
+    )}
+    {isPhone && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+    )}
+  </div>
+
+  {href ? (
+    <a href={href} class="contact-text link-hover" target={href.startsWith('http') ? "_blank" : "_self"} rel={href.startsWith('http') ? "noopener noreferrer" : ""}>
+      {blok.content}
+    </a>
+  ) : (
+    <span class="contact-text">{blok.content}</span>
+  )}
+</li>
+
+<style>
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .icon-wrapper {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary); /* The mint green brand color */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .contact-text {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .link-hover:hover {
+    color: var(--color-primary);
+  }
+</style>

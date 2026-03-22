@@ -1,0 +1,81 @@
+---
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'inverted' | 'outlined' | 'tertiary';
+  href?: string;
+  class?: string;
+}
+
+const { variant = 'primary', href, class: className = '', ...rest } = Astro.props;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element href={href} class:list={['btn', `btn-${variant}`, className]} {...rest}>
+  <slot />
+</Element>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  /* Primary: Gradient/Solid Teal */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-container));
+    color: var(--color-on-primary);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Secondary: Muted Teal */
+  .btn-secondary {
+    background: var(--color-secondary);
+    color: #ffffff;
+  }
+  .btn-secondary:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Inverted: White */
+  .btn-inverted {
+    background: #ffffff;
+    color: var(--color-surface);
+  }
+  .btn-inverted:hover {
+    background: #f0f0f0;
+  }
+
+  /* Outlined: Ghost Border */
+  .btn-outlined {
+    background: transparent;
+    border: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface);
+  }
+  .btn-outlined:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Tertiary: Text only with underline */
+  .btn-tertiary {
+    background: transparent;
+    color: var(--color-on-surface);
+    padding: 0;
+    border-radius: 0;
+    border-bottom: 2px solid var(--color-primary);
+  }
+  .btn-tertiary:hover {
+    padding-bottom: 2px;
+  }
+</style>

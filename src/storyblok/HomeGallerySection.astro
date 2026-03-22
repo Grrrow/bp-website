@@ -1,0 +1,123 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+---
+
+<section {...storyblokEditable(blok)} class="gallery-section">
+  <div class="container">
+    <div class="header">
+      <div class="section-label-wrapper">
+        <span class="line"></span>
+        <span class="section-label">{blok.section_title}</span>
+        <span class="line"></span>
+      </div>
+      <h2 class="section-headline">{blok.subtitle}</h2>
+    </div>
+
+    <div class="gallery-grid">
+      {
+        blok.items?.map((nestedBlok: any) => {
+          return <StoryblokComponent blok={nestedBlok} />
+        })
+      }
+    </div>
+
+    <div class="footer-actions">
+      {/* Note: JSON field was typo'd as view_al_button in CMS data, handling it safely */}
+      {
+        (blok.view_all_button || blok.view_al_button)?.map((nestedBlok: any) => {
+          return <StoryblokComponent blok={nestedBlok} />
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    padding: var(--spacing-24) 0;
+    background-color: var(--color-background); /* Dark background typical of sections */
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Header Centered Styling */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-label-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .line {
+    width: 2rem;
+    height: 1px;
+    background-color: var(--color-primary);
+    opacity: 0.6;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .section-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem); /* Responsive size matching design */
+    font-weight: 400;
+    color: #ffffff;
+    /* Fancy ampersand styling if italic is needed, falls back elegantly otherwise */
+    font-style: italic; 
+  }
+
+  /* Grid Layout for Gallery */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Set a reliable base row height to ensure items strictly align regardless of asset intrinsic ratio */
+    grid-auto-rows: 250px; 
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  /* Bottom Actions */
+  .footer-actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Responsive adjustments for the unified grid */
+  @media (max-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 items per row on tablet */
+      grid-auto-rows: 300px; 
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: 1fr; /* 1 item per row on mobile (e.g. iPhone XR) */
+      grid-auto-rows: 250px; 
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+  }
+</style>

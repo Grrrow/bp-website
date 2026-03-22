@@ -1,0 +1,21 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import Button from '../components/Button.astro'
+
+const { blok } = Astro.props
+
+let href = blok.link?.url || '#'
+if (blok.link?.linktype === 'story' && blok.link?.cached_url) {
+  href = `/${blok.link.cached_url === 'home' ? '' : blok.link.cached_url}`
+}
+
+const variant = blok.style === 'solid' ? 'primary' : 'outlined'
+---
+
+<Button 
+  {...storyblokEditable(blok)} 
+  href={href} 
+  variant={variant}
+>
+  {blok.text}
+</Button>

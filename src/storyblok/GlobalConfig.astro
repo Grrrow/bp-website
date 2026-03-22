@@ -1,0 +1,20 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+---
+
+<!-- Global Config serves as a wrapper for various configuration blocks like headers or footers -->
+<div {...storyblokEditable(blok)}>
+  {
+    blok.header?.map((nestedBlok: any) => {
+      return <StoryblokComponent blok={nestedBlok} />
+    })
+  }
+  {
+    blok.footer?.map((nestedBlok: any) => {
+      return <StoryblokComponent blok={nestedBlok} />
+    })
+  }
+</div>

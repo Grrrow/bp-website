@@ -1,0 +1,113 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+---
+
+<section {...storyblokEditable(blok)} class="contact-section">
+  <div class="container">
+    <div class="header">
+      <div class="section-label-wrapper">
+        <span class="line"></span>
+        <span class="section-label">{blok.title}</span>
+        <span class="line"></span>
+      </div>
+      <h2 class="section-headline">{blok.subtitle}</h2>
+      <p class="description">{blok.description}</p>
+    </div>
+
+    <div class="agency-cards-container">
+      {
+        blok.agency_card?.map((nestedBlok: any) => {
+          return <StoryblokComponent blok={nestedBlok} />
+        })
+      }
+    </div>
+
+    {blok.social_icons && blok.social_icons.length > 0 && (
+      <div class="social-icons-wrapper">
+        {
+          blok.social_icons.map((nestedBlok: any) => {
+            return <StoryblokComponent blok={nestedBlok} />
+          })
+        }
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    padding: var(--spacing-24) 0;
+    background-color: var(--color-background);
+  }
+
+  .container {
+    max-width: 800px; /* Constrained width since it's centered content */
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-label-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .line {
+    width: 2rem;
+    height: 1px;
+    background-color: var(--color-primary);
+    opacity: 0.6;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .section-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+  }
+
+  .description {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #d1d5db;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .agency-cards-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4rem;
+  }
+
+  .social-icons-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+  }
+</style>

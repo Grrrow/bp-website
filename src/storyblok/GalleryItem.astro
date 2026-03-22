@@ -1,0 +1,157 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+
+// Determine properties
+const isVideo = blok.type === "video"
+const hasCaption = !!blok.caption
+
+// Extract URL for the image
+const imageUrl = blok.media_file?.filename
+
+// Optional Video URL
+const videoUrl = blok.video_url?.cached_url || blok.video_url?.url || "#"
+---
+
+<div {...storyblokEditable(blok)} class="gallery-item">
+  {isVideo ? (
+    <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="media-container hover-effect">
+      <img src={imageUrl} alt={blok.media_file?.alt || "Video thumbnail"} class="media-image" />
+      
+      <div class="play-overlay">
+        <div class="play-button">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+      </div>
+      
+      {hasCaption && (
+        <div class="caption-overlay">
+          <span class="caption-text">{blok.caption}</span>
+        </div>
+      )}
+    </a>
+  ) : (
+    <div class="media-container">
+      <img src={imageUrl} alt={blok.media_file?.alt || "Gallery image"} class="media-image" />
+      
+      {hasCaption && (
+        <div class="caption-overlay">
+          <span class="caption-text">{blok.caption}</span>
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+<style>
+  .gallery-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    /* Subtle background and border for premium feel */
+    background-color: var(--color-surface-low);
+  }
+
+  /* Grid logic */
+  .gallery-item {
+    /* Removing explicit column spans to treat everything equally */
+  }
+
+  .media-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden; /* To contain inner image scaling */
+  }
+
+  .media-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Shows the full image regardless of aspect ratio */
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .hover-effect:hover .media-image {
+    transform: scale(1.05); /* Slight zoom on hover for interactivity */
+  }
+
+  /* Video Play Button Styling */
+  .play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease;
+  }
+
+  .hover-effect:hover .play-overlay {
+    background-color: rgba(0, 0, 0, 0.3); /* Darkens slightly on hover to highlight button */
+  }
+
+  .play-button {
+    width: 60px;
+    height: 60px;
+    background-color: #79e5a1; /* Pale green from design */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .hover-effect:hover .play-button {
+    transform: scale(1.1);
+  }
+
+  .play-icon {
+    width: 30px;
+    height: 30px;
+    color: #1a1a1a; /* Dark play triangle */
+    margin-left: 4px; /* Optical adjustment to center the triangle precisely */
+  }
+
+  /* Caption Overlay Styling */
+  .caption-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3rem 1.5rem 1rem 1.5rem; /* Generous top padding for gradient */
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none; /* Let clicks pass through to the media container */
+  }
+
+  .caption-text {
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 1024px) {
+    .gallery-item {
+      /* Handled by CSS grid auto-fit or specific columns in parent */
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-item {
+      /* Mobile overrides */
+    }
+  }
+</style>

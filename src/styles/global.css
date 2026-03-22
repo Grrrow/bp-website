@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  /* Color Tokens */
+  --color-surface: #0e0e0e;
+  --color-surface-low: #121212;
+  --color-surface-high: #1f2020;
+  
+  --color-primary: #A5C4BB;
+  --color-primary-container: #3b5851;
+  --color-secondary: #627C79;
+  --color-tertiary: #4F7D93;
+  --color-neutral: #121212;
+  
+  --color-on-surface: #e7e5e4;
+  --color-on-primary: #121212;
+  
+  --color-outline-variant: rgba(72, 72, 72, 0.2);
+
+  /* Typography */
+  --font-display: 'Noto Serif', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  /* Spacing (Simple Base) */
+  --spacing-2: 0.5rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
+  
+  /* Radii */
+  --radius-full: 9999px;
+  --radius-xl: 3rem;
+  --radius-md: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  letter-spacing: 0.02em;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  margin: 0;
+}
+
+h1 { font-size: 3.5rem; letter-spacing: -0.02em; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.5rem; }
+
+/* Utilities */
+.glass {
+  background: rgba(19, 19, 19, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.ghost-border {
+  border: 1px solid var(--color-outline-variant);
+}

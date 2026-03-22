@@ -1,0 +1,60 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import { getLangFromUrl } from '../i18n/utils';
+
+const { blok } = Astro.props
+const lang = getLangFromUrl(Astro.url);
+
+const currentPath = Astro.url.pathname;
+// Remove any double slashes and trailing slashes for clean comparison
+const cleanCurrent = currentPath.replace(/\/+$/, '') || '/';
+
+let url = '#';
+if (blok.link?.cached_url) {
+  const cachedUrl = blok.link.cached_url;
+  
+  if (cachedUrl === 'home' || cachedUrl === '') {
+     url = lang === 'es' ? '/' : '/en';
+  } else {
+     url = lang === 'es' ? `/${cachedUrl}` : `/en/${cachedUrl}`;
+  }
+}
+
+const cleanUrl = url.replace(/\/+$/, '') || '/';
+const isActive = cleanCurrent === cleanUrl;
+---
+
+<a {...storyblokEditable(blok)} href={url} class={`nav-item ${isActive ? 'active' : ''}`}>
+  {blok.label}
+</a>
+
+<style>
+  .nav-item {
+    color: var(--color-on-surface);
+    text-decoration: none;
+    font-weight: 500;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    padding-bottom: 0.35rem;
+    position: relative;
+    letter-spacing: 0.02em;
+  }
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1.5px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
+  }
+  .nav-item:hover::after,
+  .nav-item.active::after {
+    width: 100%;
+  }
+  .nav-item:hover {
+    color: var(--color-on-surface);
+  }
+</style>

@@ -1,0 +1,346 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import LanguagePicker from '../components/LanguagePicker.astro';
+import { getLangFromUrl } from '../i18n/utils';
+
+const { blok } = Astro.props
+
+const lang = getLangFromUrl(Astro.url);
+const homeUrl = lang === 'es' ? '/' : '/en';
+---
+
+<header {...storyblokEditable(blok)} class="global-header">
+  <nav class="nav-container">
+    <a href={homeUrl} class="logo">
+      {blok.logo && blok.logo.filename ? (
+        <img src={blok.logo.filename} alt={blok.logo.alt || "Logo"} />
+      ) : (
+        <div class="logo-text"><strong>Berna</strong> <em>Perles</em></div>
+      )}
+    </a>
+    
+    <button class="hamburger-btn" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+    
+    <div class="header-items-wrapper">
+      <div class="header-items">
+        {
+          blok.nav_links?.map((nestedBlok: any, index: number) => {
+            return (
+              <div class="nav-item-animate" style={`--animation-order: ${index + 1};`}>
+                <StoryblokComponent blok={nestedBlok} />
+              </div>
+            )
+          })
+        }
+        <div class="nav-item-animate lang-picker-wrapper" style={`--animation-order: ${blok.nav_links?.length ? blok.nav_links.length + 1 : 1};`}>
+          <LanguagePicker />
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1.5rem 2rem;
+    background-color: transparent; /* Top of page is transparent */
+    transition: background-color 0.4s ease, padding 0.4s ease, border-color 0.4s ease;
+    border-bottom: 1px solid transparent; /* Prepare for border on scroll */
+  }
+
+  /* Scrolled State */
+  .global-header.scrolled {
+    background-color: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem 2rem; /* Condense slightly to give back screen estate */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle separation */
+  }
+  
+  .global-header.menu-open {
+    position: fixed; /* Lock to viewport perfectly when open */
+    background-color: rgba(18, 18, 18, 0.95); /* Deep dark background */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    height: 100vh;
+    padding-bottom: 2rem;
+    overflow-y: auto;
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px; /* Slightly wider for the header */
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Logo Styles */
+  .logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    z-index: 102; /* Always above everything securely */
+    position: relative;
+  }
+  .logo img {
+    height: 32px;
+    width: auto;
+  }
+  .logo-text {
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    color: var(--color-on-surface);
+  }
+  .logo-text strong {
+    font-weight: 700;
+  }
+  .logo-text em {
+    color: var(--color-primary);
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  /* Header Items (Desktop) */
+  .header-items-wrapper {
+    display: flex;
+  }
+  .header-items {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+  .lang-picker-wrapper {
+    display: flex;
+  }
+
+  /* Hamburger Button (Hidden on Desktop) */
+  .hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 102; /* Above the menu items */
+    position: relative;
+  }
+
+  .hamburger-box {
+    width: 30px;
+    height: 24px;
+    display: inline-block;
+    position: relative;
+  }
+
+  .hamburger-inner {
+    display: block;
+    top: 50%;
+    margin-top: -1px;
+  }
+  
+  .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+    width: 30px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    position: absolute;
+    transition-property: transform, opacity, background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+  
+  .hamburger-inner::before, .hamburger-inner::after {
+    /* Using a non-breaking space as content to prevent minifier from stripping empty content */
+    content: "\00a0"; 
+    display: block;
+    font-size: 0;
+    color: transparent;
+  }
+  
+  .hamburger-inner::before { top: -8px; }
+  .hamburger-inner::after { bottom: -8px; }
+
+  /* Hamburger Active State (X) */
+  .global-header.menu-open .hamburger-inner {
+    transform: rotate(45deg);
+    background-color: var(--color-primary);
+  }
+  .global-header.menu-open .hamburger-inner::before {
+    top: 0;
+    opacity: 0;
+  }
+  .global-header.menu-open .hamburger-inner::after {
+    bottom: 0;
+    transform: rotate(-90deg);
+    background-color: var(--color-primary);
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 1024px) {
+    .global-header {
+      padding: 1rem 1.5rem;
+    }
+    
+    .logo img {
+      height: 28px;
+    }
+    .logo-text {
+      font-size: 1.25rem;
+    }
+    
+    .hamburger-btn {
+      display: block !important;
+    }
+    
+    .header-items-wrapper {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background-color: transparent;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding-top: 4rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      z-index: -1; /* Keep behind the header nav bar so logo and button are still clickable */
+      pointer-events: none;
+    }
+
+    .global-header.menu-open .header-items-wrapper {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      background-color: rgba(18, 18, 18, 0.98); /* Fallback for browsers without backdrop-filter */
+    }
+    
+    @supports (backdrop-filter: blur(15px)) {
+      .global-header.menu-open .header-items-wrapper {
+        background-color: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+      }
+    }
+    
+    .header-items {
+      flex-direction: column !important;
+      gap: 2.5rem !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+
+    /* Typography & Animation targetting the immediate generic wrapper */
+    .nav-item-animate {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+      transition-delay: calc(0.1s * var(--animation-order));
+    }
+    
+    .global-header.menu-open .nav-item-animate {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Force the child NavItem styles */
+    .global-header.menu-open :global(.nav-link) {
+      font-family: var(--font-display) !important;
+      font-size: clamp(2rem, 8vw, 3rem) !important;
+      font-weight: 300 !important;
+      text-transform: none !important;
+      letter-spacing: 0.05em !important;
+      color: #ffffff !important;
+    }
+    
+    .global-header.menu-open :global(.nav-link.active) {
+      color: var(--color-primary) !important;
+    }
+
+    /* Scale language picker significantly */
+    .global-header.menu-open :global(.language-picker form) {
+      transform: scale(1.3);
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<script>
+  // Script runs on client side to handle toggle without Framework JS
+  const initMobileMenu = () => {
+    const header = document.querySelector('.global-header');
+    const hamburger = document.querySelector('.hamburger-btn');
+    
+    if (!header || !hamburger) return;
+
+    // Reset purely in case of hot-reload states or navigations
+    header.classList.remove('menu-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    // Scroll Logic for Sticky Header
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    };
+    
+    // Initial check and setup listener
+    handleScroll();
+    window.removeEventListener('scroll', handleScroll); // Clean in case of hot reload
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const toggleMenu = () => {
+      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      
+      if (!isExpanded) {
+        header.classList.add('menu-open');
+        document.body.style.overflow = 'hidden'; // Lock body scroll perfectly
+      } else {
+        header.classList.remove('menu-open');
+        document.body.style.overflow = '';
+      }
+    };
+
+    // Clean existing listener properly to avoid stacking duplicates
+    hamburger.removeEventListener('click', toggleMenu);
+    hamburger.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking a navigation link or language picker smoothly
+    const links = header.querySelectorAll('.nav-item-animate a, .nav-item-animate select, .logo');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        header.classList.remove('menu-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  // Support Astro View Transitions if enabled
+  document.addEventListener('astro:page-load', initMobileMenu);
+  
+  // Fallback for first load if no view transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+</script>

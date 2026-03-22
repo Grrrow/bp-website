@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import { getLangFromUrl } from '../../i18n/utils';
+
+const { slug } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+
+// To avoid duplicate content and ensure /en/home works, we redirect it to /en/
+if (slug === 'home') {
+  return Astro.redirect('/en/');
+}
+
+const targetSlug = slug || 'home';
+const storyblokApi = useStoryblokApi();
+let story = null;
+
+try {
+  const { data } = await storyblokApi.get(`cdn/stories/${targetSlug}`, {
+    version: 'draft',
+    language: 'en',
+  });
+  story = data.story;
+} catch (error: any) {
+  console.log("Error fetching story:", error.message || error);
+}
+
+export async function getStaticPaths() {
+  const storyblokApi = useStoryblokApi();
+  try {
+    const { data } = await storyblokApi.get('cdn/stories', {
+      version: 'draft',
+      language: 'en',
+    });
+
+    return data.stories
+      .filter((s: any) => s.full_slug !== 'configuracion-general')
+      .flatMap((story: any) => {
+        const isHome = story.slug === 'home';
+        if (isHome) {
+          // Both /en/ and /en/home point to the same story
+          return [{ params: { slug: undefined } }, { params: { slug: 'home' } }];
+        }
+        return [{ params: { slug: story.slug } }];
+      });
+  } catch (e: any) {
+    return [];
+  }
+}
+
+// Map the custom SEO fields created in Storyblok
+const seoTitle = story?.content?.meta_title || story?.name || 'Berna Perles';
+const seoDescription = story?.content?.meta_description || 'Soprano Berna Perles';
+const seoImage = story?.content?.og_image?.filename || '';
+---
+
+<Layout title={seoTitle} description={seoDescription} image={seoImage} lang={lang}>
+  {story ? <StoryblokComponent blok={story.content} /> : <p class="ghost-border" style="padding:2rem;text-align:center;">Page not found or missing token...</p>}
+</Layout>

@@ -1,0 +1,101 @@
+---
+/**
+ * StoryblokImage.astro
+ * An impeccable, high-performance image component tailored for Storyblok.
+ * Features:
+ * - <picture> tag for serving AVIF with WebP/JPEG fallbacks.
+ * - Retina/Hi-DPI support (1x, 1.5x, 2x) via srcset.
+ * - Smart cropping based on Storyblok focal point.
+ * - CLS (Cumulative Layout Shift) prevention by forcing aspect ratio.
+ * - LCP (Largest Contentful Paint) optimization via loading and fetchpriority.
+ */
+
+export interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height?: number;
+  quality?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+  smart?: boolean; // Enable Storyblok smart cropping
+}
+
+const { 
+  src, 
+  alt, 
+  width, 
+  height, 
+  quality = 85,
+  class: className,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  sizes,
+  smart = true
+} = Astro.props;
+
+if (!src) return null;
+
+const isStoryblok = src.includes('a.storyblok.com');
+
+// Helper to build the transformation string
+const getTransform = (w: number, h: number = 0, format?: string) => {
+  if (!isStoryblok) return src;
+  
+  let options = `m/${w}x${h}/`;
+  if (smart) options += 'smart/';
+  
+  const filters = [];
+  if (format) filters.push(`format(${format})`);
+  filters.push(`quality(${quality})`);
+  filters.push('no_upscale()'); // Prevent blurring by enlarging small assets
+  
+  return `${src}/${options}filters:${filters.join(':')}`;
+};
+
+// Generate srcset for a specific format
+const getSrcset = (w: number, h: number = 0, format?: string) => {
+  const s1 = getTransform(w, h, format);
+  const s1_5 = getTransform(Math.round(w * 1.5), Math.round(h * 1.5), format);
+  const s2 = getTransform(w * 2, h * 2, format);
+  return `${s1} 1x, ${s1_5} 1.5x, ${s2} 2x`;
+};
+
+const avifSet = isStoryblok ? getSrcset(width, height || 0, 'avif') : null;
+const webpSet = isStoryblok ? getSrcset(width, height || 0, 'webp') : null;
+const defaultSrc = isStoryblok ? getTransform(width, height || 0) : src;
+---
+
+<picture class={className}>
+  {isStoryblok && (
+    <>
+      <source type="image/avif" srcset={avifSet} sizes={sizes} />
+      <source type="image/webp" srcset={webpSet} sizes={sizes} />
+    </>
+  )}
+  <img 
+    src={defaultSrc} 
+    alt={alt} 
+    width={width} 
+    height={height} 
+    loading={loading} 
+    fetchpriority={fetchpriority}
+    decoding="async"
+  />
+</picture>
+
+<style define:vars={{ width, height: height || 'auto' }}>
+  picture {
+    display: block;
+    line-height: 0;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* Impeccable CLS prevention: reserve the space before the image arrives */
+    aspect-ratio: var(--width) / var(--height);
+  }
+</style>

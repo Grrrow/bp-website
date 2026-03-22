@@ -1,0 +1,201 @@
+---
+import { storyblokEditable, renderRichText } from '@storyblok/astro'
+import StoryblokImage from '../components/StoryblokImage.astro';
+
+const { blok } = Astro.props
+
+const renderedRichText = renderRichText(blok.text_content)
+
+let href = blok.cta_link?.url || '#'
+if (blok.cta_link?.linktype === 'story' && blok.cta_link?.cached_url) {
+  href = `/${blok.cta_link.cached_url === 'home' ? '' : blok.cta_link.cached_url}`
+}
+---
+
+<section {...storyblokEditable(blok)} class="bio-section">
+  <div class="container">
+    <div class="bio-grid">
+      <div class="bio-content">
+        <div class="bio-label-wrapper">
+          <span class="bio-label">{blok.label}</span>
+        </div>
+        
+        <h2 class="bio-headline">{blok.headline}</h2>
+        
+        <div class="bio-text" set:html={renderedRichText} />
+        
+        {blok.cta_label && (
+          <a href={href} class="bio-link">
+            {blok.cta_label}
+            <span class="arrow">→</span>
+          </a>
+        )}
+      </div>
+
+      <div class="bio-image-wrapper">
+        <div class="image-inner-wrapper">
+          <StoryblokImage 
+            src={blok.image.filename} 
+            alt={blok.image.alt || "Berna Perles Biografía"} 
+            width={600}
+            height={800}
+            class="bio-img"
+          />
+          <div class="image-accent-border"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bio-section {
+    padding: var(--spacing-24) 0;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    overflow: hidden;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  /* Label with prefix line */
+  .bio-label-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .bio-label-wrapper::before {
+    content: '';
+    width: 3rem;
+    height: 2px; /* Thicker line */
+    background-color: var(--color-primary); /* Use primary color for the line */
+    opacity: 0.8;
+  }
+
+  .bio-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .bio-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 1.1;
+    margin-bottom: 3rem;
+    max-width: 95%;
+  }
+
+  .bio-text {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.75;
+    opacity: 0.9;
+    margin-bottom: 3.5rem;
+    max-width: 90%;
+  }
+
+  /* Rich text paragraph spacing */
+  .bio-text :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .bio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-on-surface);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 6px;
+  }
+
+  .bio-link:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    gap: 1.5rem;
+  }
+
+  .bio-link .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  /* Image part */
+  .bio-image-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+  }
+
+  .image-inner-wrapper {
+    position: relative;
+    max-width: 100%;
+  }
+
+  :global(.bio-img) {
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .image-accent-border {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    right: -1.5rem;
+    bottom: -1.5rem;
+    border: 2px solid var(--color-primary); /* Thicker and solid as requested */
+    border-radius: 1rem;
+    z-index: 1;
+    opacity: 0.6; /* Balanced brightness */
+  }
+
+  @media (max-width: 1024px) {
+    .bio-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    .bio-content {
+      order: 2;
+    }
+    .bio-image-wrapper {
+      order: 1;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .bio-headline, .bio-text {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .bio-section {
+      padding: var(--spacing-16) 0;
+    }
+    .bio-headline {
+      font-size: 1.875rem;
+    }
+  }
+</style>

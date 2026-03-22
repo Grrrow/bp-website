@@ -1,0 +1,61 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+---
+
+<div {...storyblokEditable(blok)} class="agency-card">
+  <h3 class="agency-title">{blok.title}</h3>
+  
+  <ul class="contact-list">
+    {
+      blok.details?.map((nestedBlok: any) => {
+        return <StoryblokComponent blok={nestedBlok} />
+      })
+    }
+  </ul>
+</div>
+
+<style>
+  .agency-card {
+    background-color: var(--color-surface-low); /* Dark gray background */
+    border-radius: 8px;
+    padding: 4rem;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Subtle border matching the design aesthetic */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .agency-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-primary);
+    margin-bottom: 2.5rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    /* Max width to contain items and left-align them as a block inside centered component */
+    max-width: 320px; 
+  }
+
+  @media (max-width: 640px) {
+    .agency-card {
+      padding: 3rem 2rem;
+    }
+  }
+</style>
