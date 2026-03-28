@@ -11,14 +11,14 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
 
 <section {...storyblokEditable(blok)} class="featured-videos-section">
   <div class="container">
-    <div class="section-header">
-      {blok.label && <span class="archive-label">{blok.label}</span>}
-      <h2 class="section-title">{blok.description}</h2>
+    <div class="section-header reveal reveal-up stagger-container">
+      {blok.label && <span class="archive-label reveal reveal-up" style="--stagger-index: 1;">{blok.label}</span>}
+      <h2 class="section-title reveal reveal-up" style="--stagger-index: 2;">{blok.description}</h2>
     </div>
 
-    <div class="videos-grid">
-      {featuredVideos.map((videoBlok: any) => (
-        <div class="featured-video-item">
+    <div class="videos-grid stagger-container">
+      {featuredVideos.map((videoBlok: any, index: number) => (
+        <div class="featured-video-item reveal reveal-up" style={`--stagger-index: ${index + 3};`}>
           <!-- Main Thumbnail Area -->
           <a 
             href={videoBlok.video_url?.cached_url || videoBlok.video_url?.url || "#"} 
@@ -26,13 +26,15 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
             rel="noopener noreferrer" 
             class="media-container hover-effect"
           >
-            <StoryblokImage 
-              src={videoBlok.media_file?.filename} 
-              alt={videoBlok.media_file?.alt || "Video thumbnail"} 
-              width={800}
-              height={450}
-              class="media-image" 
-            />
+            <div class="image-reveal active h-full">
+              <StoryblokImage 
+                src={videoBlok.media_file?.filename} 
+                alt={videoBlok.media_file?.alt || "Video thumbnail"} 
+                width={800}
+                height={450}
+                class="media-image" 
+              />
+            </div>
             
             <div class="play-overlay">
               <div class="play-button">

@@ -7,14 +7,16 @@ const { blok } = Astro.props
 
 <section {...storyblokEditable(blok)} class="award-section">
   <div class="container">
-    <div class="header">
-      {blok.label && <span class="section-label">{blok.label}</span>}
-      <h2 class="section-headline">{blok.headline}</h2>
+    <div class="header reveal reveal-up stagger-container">
+      {blok.label && <span class="section-label reveal reveal-up" style="--stagger-index: 1;">{blok.label}</span>}
+      <h2 class="section-headline reveal reveal-up" style="--stagger-index: 2;">{blok.headline}</h2>
     </div>
     
-    <div class="award-list">
-      {blok.award_list && blok.award_list.map((subblok) => (
-        <StoryblokComponent blok={subblok} />
+    <div class="award-list stagger-container">
+      {blok.award_list && blok.award_list.map((subblok: any, index: number) => (
+        <div class="reveal reveal-up" style={`--stagger-index: ${index + 3};`}>
+          <StoryblokComponent blok={subblok} />
+        </div>
       ))}
     </div>
   </div>

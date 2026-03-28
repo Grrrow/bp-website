@@ -7,24 +7,28 @@ const { blok } = Astro.props
 
 <section {...storyblokEditable(blok)} class="gallery-section">
   <div class="container">
-    <div class="header">
-      <div class="section-label-wrapper">
+    <div class="header reveal reveal-up stagger-container">
+      <div class="section-label-wrapper reveal reveal-up" style="--stagger-index: 1;">
         <span class="line"></span>
         <span class="section-label">{blok.section_title}</span>
         <span class="line"></span>
       </div>
-      <h2 class="section-headline">{blok.subtitle}</h2>
+      <h2 class="section-headline reveal reveal-up" style="--stagger-index: 2;">{blok.subtitle}</h2>
     </div>
 
-    <div class="gallery-grid">
+    <div class="gallery-grid stagger-container">
       {
-        blok.items?.map((nestedBlok: any) => {
-          return <StoryblokComponent blok={nestedBlok} />
+        blok.items?.map((nestedBlok: any, index: number) => {
+          return (
+            <div class="reveal reveal-up" style={`--stagger-index: ${index + 3};`}>
+              <StoryblokComponent blok={nestedBlok} />
+            </div>
+          )
         })
       }
     </div>
 
-    <div class="footer-actions">
+    <div class="footer-actions reveal reveal-up" style="--stagger-index: 10;">
       {/* Note: JSON field was typo'd as view_al_button in CMS data, handling it safely */}
       {
         (blok.view_all_button || blok.view_al_button)?.map((nestedBlok: any) => {

@@ -7,15 +7,15 @@ const { blok } = Astro.props
 
 <section {...storyblokEditable(blok)} class="calendar-section">
   <div class="container">
-    <div class="header-row">
-      <div class="title-group">
-        <div class="section-label-wrapper">
+    <div class="header-row reveal reveal-up">
+      <div class="title-group stagger-container">
+        <div class="section-label-wrapper reveal reveal-up" style="--stagger-index: 1;">
           <span class="section-label">{blok.label}</span>
         </div>
-        <h2 class="section-headline">{blok.headline}</h2>
+        <h2 class="section-headline reveal reveal-up" style="--stagger-index: 2;">{blok.headline}</h2>
       </div>
 
-      <div class="header-actions">
+      <div class="header-actions reveal reveal-up" style="--stagger-index: 3;">
         {
           blok.view_all_button?.map((nestedBlok: any) => {
             return <StoryblokComponent blok={nestedBlok} />
@@ -24,10 +24,14 @@ const { blok } = Astro.props
       </div>
     </div>
 
-    <div class="events-list">
+    <div class="events-list stagger-container">
       {
-        blok.event?.map((nestedBlok: any) => {
-          return <StoryblokComponent blok={nestedBlok} />
+        blok.event?.map((nestedBlok: any, index: number) => {
+          return (
+            <div class="reveal reveal-up" style={`--stagger-index: ${index + 4};`}>
+              <StoryblokComponent blok={nestedBlok} />
+            </div>
+          )
         })
       }
     </div>

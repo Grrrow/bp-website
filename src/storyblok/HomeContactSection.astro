@@ -7,29 +7,37 @@ const { blok } = Astro.props
 
 <section {...storyblokEditable(blok)} class="contact-section">
   <div class="container">
-    <div class="header">
-      <div class="section-label-wrapper">
+    <div class="header reveal reveal-up stagger-container">
+      <div class="section-label-wrapper reveal reveal-up" style="--stagger-index: 1;">
         <span class="line"></span>
         <span class="section-label">{blok.title}</span>
         <span class="line"></span>
       </div>
-      <h2 class="section-headline">{blok.subtitle}</h2>
-      <p class="description">{blok.description}</p>
+      <h2 class="section-headline reveal reveal-up" style="--stagger-index: 2;">{blok.subtitle}</h2>
+      <p class="description reveal reveal-up" style="--stagger-index: 3;">{blok.description}</p>
     </div>
 
-    <div class="agency-cards-container">
+    <div class="agency-cards-container stagger-container">
       {
-        blok.agency_card?.map((nestedBlok: any) => {
-          return <StoryblokComponent blok={nestedBlok} />
+        blok.agency_card?.map((nestedBlok: any, index: number) => {
+          return (
+            <div class="reveal reveal-up" style={`--stagger-index: ${index + 4};`}>
+              <StoryblokComponent blok={nestedBlok} />
+            </div>
+          )
         })
       }
     </div>
 
     {blok.social_icons && blok.social_icons.length > 0 && (
-      <div class="social-icons-wrapper">
+      <div class="social-icons-wrapper stagger-container">
         {
-          blok.social_icons.map((nestedBlok: any) => {
-            return <StoryblokComponent blok={nestedBlok} />
+          blok.social_icons.map((nestedBlok: any, index: number) => {
+            return (
+              <div class="reveal reveal-scale" style={`--stagger-index: ${index + 6};`}>
+                <StoryblokComponent blok={nestedBlok} />
+              </div>
+            )
           })
         }
       </div>

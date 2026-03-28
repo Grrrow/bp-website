@@ -100,8 +100,9 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     position: relative;
   }
   .logo img {
+    width: 249px;
     height: 32px;
-    width: auto;
+    display: block;
   }
   .logo-text {
     font-size: 1.5rem;
@@ -198,6 +199,7 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     }
     
     .logo img {
+      width: 218px; /* Correctly scaled for mobile */
       height: 28px;
     }
     .logo-text {
@@ -300,12 +302,19 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
-    // 2. Scroll Logic with leak prevention
+    // 2. Scroll Logic with leak prevention and rAF
+    let isTicking = false;
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+          isTicking = false;
+        });
+        isTicking = true;
       }
     };
     

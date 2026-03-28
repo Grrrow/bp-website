@@ -10,18 +10,18 @@ const renderedRichText = renderRichText(blok.content)
 <section {...storyblokEditable(blok)} class="trajectory-section">
   <div class="container">
     <div class="trajectory-grid">
-      <div class="trajectory-content">
-        <div class="title-wrapper">
+      <div class="trajectory-content reveal reveal-right stagger-container">
+        <div class="title-wrapper reveal reveal-right" style="--stagger-index: 1;">
           <div class="accent-bar"></div>
           <h2 class="trajectory-title">{blok.title}</h2>
         </div>
         
-        <div class="trajectory-text" set:html={renderedRichText} />
+        <div class="trajectory-text reveal reveal-right" style="--stagger-index: 2;" set:html={renderedRichText} />
       </div>
 
-      <div class="trajectory-image-wrapper">
+      <div class="trajectory-image-wrapper reveal reveal-left">
         {blok.image && blok.image.filename && (
-          <div class="circular-image-container">
+          <div class="circular-image-container image-reveal active">
             <StoryblokImage 
               src={blok.image.filename} 
               alt={blok.image.alt || "Berna Perles Trayectoria"} 

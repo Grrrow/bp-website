@@ -15,8 +15,8 @@ const opacity = blok.overlay_opacity || '0.5'
       <StoryblokImage 
         src={bgImage} 
         alt={blok.background_image?.alt || "Berna Perles Background"}
-        width={1920}
-        height={1080}
+        width={1440}
+        height={960}
         loading="eager"
         fetchpriority="high"
         class="hero-img"
@@ -27,16 +27,16 @@ const opacity = blok.overlay_opacity || '0.5'
   )}
 
   <div class="hero-container">
-    <div class="hero-content">
-      {blok.soprao_label && <span class="hero-label">{blok.soprao_label}</span>}
-      <h1 class="hero-title">
+    <div class="hero-content stagger-container">
+      {blok.soprao_label && <span class="hero-label reveal reveal-up" style="--stagger-index: 1;">{blok.soprao_label}</span>}
+      <h1 class="hero-title reveal reveal-up" style="--stagger-index: 2;">
         <span class="title-part-1">{blok.title_part_1}</span>
         <span class="title-part-2">{blok.title_part_2}</span>
       </h1>
       
-      {blok.quote_text && <p class="hero-quote">{blok.quote_text}</p>}
+      {blok.quote_text && <p class="hero-quote reveal reveal-up" style="--stagger-index: 3;">{blok.quote_text}</p>}
 
-      <div class="hero-buttons">
+      <div class="hero-buttons reveal reveal-up" style="--stagger-index: 4;">
         {
           blok.button_blocks?.map((nestedBlok: any) => {
             return <StoryblokComponent blok={nestedBlok} />

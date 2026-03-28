@@ -15,31 +15,32 @@ if (blok.cta_link?.linktype === 'story' && blok.cta_link?.cached_url) {
 <section {...storyblokEditable(blok)} class="bio-section">
   <div class="container">
     <div class="bio-grid">
-      <div class="bio-content">
-        <div class="bio-label-wrapper">
+      <div class="bio-content reveal reveal-right stagger-container">
+        <div class="bio-label-wrapper reveal reveal-right" style="--stagger-index: 1;">
           <span class="bio-label">{blok.label}</span>
         </div>
         
-        <h2 class="bio-headline">{blok.headline}</h2>
+        <h2 class="bio-headline reveal reveal-right" style="--stagger-index: 2;">{blok.headline}</h2>
         
-        <div class="bio-text" set:html={renderedRichText} />
+        <div class="bio-text reveal reveal-right" style="--stagger-index: 3;" set:html={renderedRichText} />
         
         {blok.cta_label && (
-          <a href={href} class="bio-link">
+          <a href={href} class="bio-link reveal reveal-right" style="--stagger-index: 4;">
             {blok.cta_label}
             <span class="arrow">→</span>
           </a>
         )}
       </div>
 
-      <div class="bio-image-wrapper">
-        <div class="image-inner-wrapper">
+      <div class="bio-image-wrapper reveal reveal-left">
+        <div class="image-inner-wrapper image-reveal active">
           <StoryblokImage 
             src={blok.image.filename} 
             alt={blok.image.alt || "Berna Perles Biografía"} 
-            width={600}
-            height={800}
+            width={450}
+            height={600}
             class="bio-img"
+            sizes="(max-width: 768px) 90vw, (max-width: 1200px) 40vw, 600px"
           />
           <div class="image-accent-border"></div>
         </div>

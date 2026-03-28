@@ -14,12 +14,12 @@ const getLabel = (iconType: string) => {
 }
 ---
 
-<div {...storyblokEditable(blok)} class="agency-details-card">
-  <h2 class="card-title">{blok.title}</h2>
+<div {...storyblokEditable(blok)} class="agency-details-card reveal reveal-up stagger-container">
+  <h2 class="card-title reveal reveal-up" style="--stagger-index: 1;">{blok.title}</h2>
   
-  <div class="contact-items-list">
-    {blok.items?.map((item: any) => (
-      <div class="contact-item-group">
+  <div class="contact-items-list stagger-container">
+    {blok.items?.map((item: any, index: number) => (
+      <div class="contact-item-group reveal reveal-up" style={`--stagger-index: ${index + 2};`}>
         <span class="item-label">{getLabel(item.icon_type)}</span>
         <div class="item-content-wrapper">
            <span class="item-value">{item.content}</span>

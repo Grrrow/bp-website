@@ -25,8 +25,14 @@ const Element = href ? 'a' : 'button';
     border: none;
     border-radius: var(--radius-full);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     color: inherit;
+    will-change: transform;
+  }
+
+  .icon-btn:hover {
+    transform: scale(1.15) translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   }
 
   .icon-btn svg {

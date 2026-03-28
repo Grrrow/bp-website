@@ -6,10 +6,10 @@ const { blok } = Astro.props
 
 <header {...storyblokEditable(blok)} class="multimedia-hero">
   <div class="container">
-    <div class="hero-content">
-      {blok.label && <span class="archive-label">{blok.label}</span>}
-      <h1 class="hero-headline">{blok.headline}</h1>
-      <div class="accent-line"></div>
+    <div class="hero-content stagger-container">
+      {blok.label && <span class="archive-label reveal reveal-up" style="--stagger-index: 1;">{blok.label}</span>}
+      <h1 class="hero-headline reveal reveal-up" style="--stagger-index: 2;">{blok.headline}</h1>
+      <div class="accent-line reveal reveal-left" style="--stagger-index: 3;"></div>
     </div>
   </div>
 </header>

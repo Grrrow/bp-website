@@ -7,20 +7,20 @@ const { blok } = Astro.props
 
 <section {...storyblokEditable(blok)} class="biography-hero">
   <div class="hero-container">
-    <div class="content-col">
-      {blok.label && <span class="label">{blok.label}</span>}
-      <h1 class="title">{blok.title}</h1>
-      {blok.description && <p class="description">{blok.description}</p>}
+    <div class="content-col reveal reveal-right stagger-container">
+      {blok.label && <span class="label reveal reveal-right" style="--stagger-index: 1;">{blok.label}</span>}
+      <h1 class="title reveal reveal-right" style="--stagger-index: 2;">{blok.title}</h1>
+      {blok.description && <p class="description reveal reveal-right" style="--stagger-index: 3;">{blok.description}</p>}
     </div>
     
-    <div class="image-col">
+    <div class="image-col reveal reveal-left">
       <div class="image-wrapper">
         {blok.portrait_image && blok.portrait_image.filename && (
-          <div class="portrait-container">
+          <div class="portrait-container image-reveal active">
             <StoryblokImage 
               src={blok.portrait_image.filename} 
               alt={blok.portrait_image.alt || blok.title || "Portrait"}
-              class="portrait"
+              class="portrait "
               width={800}
               loading="eager"
               fetchpriority="high"
@@ -28,7 +28,7 @@ const { blok } = Astro.props
           </div>
         )}
         {blok.cita && (
-          <div class="floating-quote">
+          <div class="floating-quote reveal reveal-up" style="transition-delay: 0.6s;">
             <p>{blok.cita}</p>
           </div>
         )}

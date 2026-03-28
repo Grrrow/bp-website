@@ -29,14 +29,16 @@ const pastEvents = allEvents
   <div class="container">
     {upcomingEvents.length > 0 && (
       <div class="section-group">
-        <div class="list-header">
-          <h2 class="list-title">{blok.title || "Próximas Actuaciones"}</h2>
-          {blok.season_label && <span class="season-label">{blok.season_label}</span>}
+        <div class="list-header reveal reveal-up stagger-container">
+          <h2 class="list-title reveal reveal-up" style="--stagger-index: 1;">{blok.title || "Próximas Actuaciones"}</h2>
+          {blok.season_label && <span class="season-label reveal reveal-up" style="--stagger-index: 2;">{blok.season_label}</span>}
         </div>
 
-        <div class="events-container">
-          {upcomingEvents.map((eventBlok: any) => (
-            <StoryblokComponent blok={eventBlok} />
+        <div class="events-container stagger-container">
+          {upcomingEvents.map((eventBlok: any, index: number) => (
+            <div class="reveal reveal-up" style={`--stagger-index: ${index + 3};`}>
+              <StoryblokComponent blok={eventBlok} />
+            </div>
           ))}
         </div>
       </div>
@@ -44,13 +46,15 @@ const pastEvents = allEvents
 
     {pastEvents.length > 0 && (
       <div class="section-group archive-section">
-        <div class="list-header">
-          <h2 class="list-title archive-title">Actuaciones Pasadas</h2>
+        <div class="list-header reveal reveal-up">
+          <h2 class="list-title archive-title">{blok.past_events_label || "Actuaciones Pasadas"}</h2>
         </div>
 
-        <div class="events-container">
-          {pastEvents.map((eventBlok: any) => (
-            <StoryblokComponent blok={eventBlok} isPast={true} />
+        <div class="events-container stagger-container">
+          {pastEvents.map((eventBlok: any, index: number) => (
+            <div class="reveal reveal-up" style={`--stagger-index: ${index + 1};`}>
+              <StoryblokComponent blok={eventBlok} isPast={true} />
+            </div>
           ))}
         </div>
       </div>

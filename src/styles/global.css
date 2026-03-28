@@ -76,3 +76,65 @@ h3 { font-size: 1.25rem; }
 .ghost-border {
   border: 1px solid var(--color-outline-variant);
 }
+
+/* --- Animation System --- */
+
+/* Base reveal state */
+.reveal {
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  pointer-events: none; /* Avoid interaction before reveal */
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) !important;
+  pointer-events: auto;
+}
+
+/* Directional variants */
+.reveal-up { transform: translateY(30px); }
+.reveal-down { transform: translateY(-30px); }
+.reveal-left { transform: translateX(30px); }
+.reveal-right { transform: translateX(-30px); }
+.reveal-scale { transform: scale(0.95); }
+
+/* Stagger Logic */
+.stagger-container .reveal {
+  transition-delay: calc(var(--stagger-index, 0) * 100ms);
+}
+
+/* Image specific reveal */
+.image-reveal {
+  overflow: hidden;
+  position: relative;
+}
+
+.image-reveal img {
+  transform: scale(1.1);
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-reveal.active img {
+  transform: scale(1);
+}
+
+/* Hover Micro-interactions */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(165, 196, 187, 0.3);
+}
+
+/* Delay Utilities */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-500 { transition-delay: 500ms; }

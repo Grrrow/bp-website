@@ -24,7 +24,7 @@ const {
   alt,
   width,
   height,
-  quality = 80,
+  quality = 75,
   smart = true,
   loading = 'lazy',
   fetchpriority = 'auto',
@@ -63,8 +63,8 @@ const getUrl = (w: number | string, f: 'webp' | 'avif' | 'original' = 'webp') =>
  */
 const getSrcset = (f: 'webp' | 'avif') => {
   if (!isStoryblok) return null;
-  // Breakpoints estándar para optimización adaptativa
-  const widths = [400, 800, 1200, 1600];
+  // Breakpoints estándar para optimización adaptativa - Incluyendo 300 para móvil
+  const widths = [300, 400, 800, 1200, 1600];
   return widths
     .map(w => `${getUrl(w, f)} ${w}w`)
     .join(', ');

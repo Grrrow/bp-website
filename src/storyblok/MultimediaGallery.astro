@@ -10,7 +10,7 @@ const videoLabel = blok.video_tab_label || "Videos"
 
 <section {...storyblokEditable(blok)} class="multimedia-gallery-section" id="multimedia-gallery">
   <div class="container">
-    <nav class="gallery-tabs">
+    <nav class="gallery-tabs reveal reveal-up">
       <button class="tab-btn active" data-tab="photos">
         {photoLabel}
         <span class="underline"></span>
@@ -23,16 +23,20 @@ const videoLabel = blok.video_tab_label || "Videos"
 
     <div class="tabs-content">
       <!-- Photos Grid -->
-      <div class="gallery-grid active" id="photos-grid">
-        {blok.photos_items && blok.photos_items.map((subblok: any) => (
-          <StoryblokComponent blok={subblok} />
+      <div class="gallery-grid active stagger-container" id="photos-grid">
+        {blok.photos_items && blok.photos_items.map((subblok: any, index: number) => (
+          <div class="reveal reveal-up" style={`--stagger-index: ${index + 1};`}>
+            <StoryblokComponent blok={subblok} />
+          </div>
         ))}
       </div>
 
       <!-- Videos Grid -->
-      <div class="gallery-grid" id="videos-grid">
-        {blok.video_items && blok.video_items.map((subblok: any) => (
-          <StoryblokComponent blok={subblok} />
+      <div class="gallery-grid stagger-container" id="videos-grid">
+        {blok.video_items && blok.video_items.map((subblok: any, index: number) => (
+          <div class="reveal reveal-up" style={`--stagger-index: ${index + 1};`}>
+            <StoryblokComponent blok={subblok} />
+          </div>
         ))}
       </div>
     </div>

@@ -5,8 +5,8 @@ import StoryblokImage from '../components/StoryblokImage.astro'
 const { blok } = Astro.props
 ---
 
-<div {...storyblokEditable(blok)} class="contact-portrait-card">
-  <div class="image-wrapper">
+<div {...storyblokEditable(blok)} class="contact-portrait-card reveal reveal-right delay-300">
+  <div class="image-wrapper image-reveal active">
     <StoryblokImage 
       src={blok.image?.filename} 
       alt={blok.image?.alt || blok.name}

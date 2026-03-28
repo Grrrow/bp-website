@@ -135,6 +135,33 @@ const personSchema = {
       </>
     )}
 	</body>
+  
+  <script>
+    // Reveal Observer Logic
+    const initReveal = () => {
+      const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Once revealed, we can stop observing it
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    };
+
+    // Run on initial load
+    initReveal();
+    // Run after Astro view transitions
+    document.addEventListener('astro:after-swap', initReveal);
+  </script>
 </html>
 
 <style>
