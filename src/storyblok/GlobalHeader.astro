@@ -286,23 +286,20 @@ const homeUrl = lang === 'es' ? '/' : '/en';
   }
 </style>
 
-<script>
-  // Script runs on client side to handle toggle without Framework JS
-  // Use a persistent object to store state and shared functions
-  let scrollHandler: any = null;
+<script is:inline>
+  // Script runs on client side - Inlined to break critical request chains
+  let scrollHandlerHeader = null;
 
   const initMobileMenu = () => {
-    const header = document.querySelector('.global-header') as HTMLElement;
-    const hamburger = document.querySelector('.hamburger-btn') as HTMLElement;
+    const header = document.querySelector('.global-header');
+    const hamburger = document.querySelector('.hamburger-btn');
     
     if (!header || !hamburger) return;
 
-    // 1. Reset state on new page load
     header.classList.remove('menu-open');
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
-    // 2. Scroll Logic with leak prevention and rAF
     let isTicking = false;
     const handleScroll = () => {
       if (!isTicking) {
@@ -318,12 +315,11 @@ const homeUrl = lang === 'es' ? '/' : '/en';
       }
     };
     
-    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
-    scrollHandler = handleScroll;
-    window.addEventListener('scroll', scrollHandler, { passive: true });
-    handleScroll(); // Initial check
+    if (scrollHandlerHeader) window.removeEventListener('scroll', scrollHandlerHeader);
+    scrollHandlerHeader = handleScroll;
+    window.addEventListener('scroll', scrollHandlerHeader, { passive: true });
+    handleScroll();
 
-    // 3. Menu Toggle Logic
     const toggleMenu = () => {
       const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
       hamburger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
@@ -337,12 +333,11 @@ const homeUrl = lang === 'es' ? '/' : '/en';
       }
     };
 
-    hamburger.onclick = toggleMenu; // Using onclick instead of addEventListener for easy replacement/no-duplication
+    hamburger.onclick = toggleMenu;
 
-    // 4. Link Clicks
     const links = header.querySelectorAll('.nav-item-animate a, .logo');
     links.forEach(link => {
-      (link as HTMLElement).onclick = () => {
+      link.onclick = () => {
         header.classList.remove('menu-open');
         hamburger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
@@ -350,9 +345,6 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     });
   }
 
-  // Subscribe to page loads
   document.addEventListener('astro:page-load', initMobileMenu);
-  
-  // Initial run
   initMobileMenu();
 </script>

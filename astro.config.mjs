@@ -66,7 +66,10 @@ export default defineConfig({
     }
   },
   prefetch: {
-    prefetchAll: true,
+    prefetchAll: false, // Avoid excessive background noise
     defaultStrategy: 'hover'
+  },
+  build: {
+    inlineStylesheets: 'always' // Inline CSS to break critical request chains
   }
 });
