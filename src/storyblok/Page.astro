@@ -3,12 +3,59 @@ import { storyblokEditable } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 
 const { blok } = Astro.props;
+
+const isContactPage = blok.component === 'page' && (Astro.url.pathname.includes('/contacto') || Astro.url.pathname.includes('/contact'));
 ---
 
-<main {...storyblokEditable(blok)}>
+<main {...storyblokEditable(blok)} class:list={[{ 'contact-page-layout': isContactPage }]}>
   {
     blok.body?.map((nestedBlok: any) => {
       return <StoryblokComponent blok={nestedBlok} />
     })
   }
 </main>
+
+<style is:global>
+  /* Specialized grid for contact page components when rendered in Page.astro */
+  .contact-page-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000000;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-page-layout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas: 
+        "hero hero"
+        "agency portrait"
+        "agency social"
+        "info info";
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 0 2rem;
+      padding-bottom: 5rem;
+    }
+
+    /* Target direct children based on their component tags or data attributes if available */
+    /* Since StoryblokComponent renders the components, we look for classes or IDs we defined */
+    
+    .contact-hero { grid-area: hero; width: 100vw; margin-left: calc(50% - 50vw); }
+    .agency-details-card { grid-area: agency; align-self: start; }
+    .contact-portrait-card { grid-area: portrait; align-self: start; }
+    .contact-social-bar { grid-area: social; align-self: start; max-width: 100%; }
+    .contact-footer-text { grid-area: info; width: 100vw; margin-left: calc(50% - 50vw); }
+  }
+
+  @media (max-width: 1023px) {
+    .contact-page-layout {
+      gap: 2rem;
+      padding: 0 1.5rem;
+    }
+    .contact-hero, .contact-footer-text {
+        width: 100%;
+    }
+  }
+</style>

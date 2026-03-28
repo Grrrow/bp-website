@@ -2,8 +2,8 @@
 
 :root {
   /* Color Tokens */
-  --color-surface: #0e0e0e;
-  --color-surface-low: #121212;
+  --color-surface: #000000;
+  --color-surface-low: #000000;
   --color-surface-high: #1f2020;
   
   --color-primary: #A5C4BB;

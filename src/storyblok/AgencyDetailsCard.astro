@@ -1,0 +1,93 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+
+const getLabel = (iconType: string) => {
+  switch (iconType) {
+    case 'user': return 'COMPANY'
+    case 'email': return 'GENERAL INQUIRIES'
+    case 'phone': return 'PHONE'
+    default: return ''
+  }
+}
+---
+
+<div {...storyblokEditable(blok)} class="agency-details-card">
+  <h2 class="card-title">{blok.title}</h2>
+  
+  <div class="contact-items-list">
+    {blok.items?.map((item: any) => (
+      <div class="contact-item-group">
+        <span class="item-label">{getLabel(item.icon_type)}</span>
+        <div class="item-content-wrapper">
+           <span class="item-value">{item.content}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .agency-details-card {
+    background-color: #000000;
+    border-radius: 2.5rem;
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    height: 100%;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-weight: 300;
+  }
+
+  .contact-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .contact-item-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .item-label {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .item-value {
+    font-family: var(--font-body);
+    font-size: 1.75rem;
+    color: #ffffff;
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 1024px) {
+    .agency-details-card {
+      padding: 3.5rem 2.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .card-title {
+      font-size: 1.75rem;
+    }
+    .item-value {
+      font-size: 1.4rem;
+    }
+  }
+</style>

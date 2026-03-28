@@ -1,0 +1,70 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+---
+
+<div {...storyblokEditable(blok)} class="role-card">
+  <div class="card-content">
+    <h3 class="role-name">{blok.role_name}</h3>
+    <p class="opera-info">{blok.opera_info}</p>
+    <p class="role-description">{blok.description}</p>
+  </div>
+</div>
+
+<style>
+  .role-card {
+    background-color: #1a1a1a; /* Slightly lighter than the background */
+    border-radius: 2.25rem;
+    padding: 3.5rem 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    text-align: center;
+  }
+
+  .role-card:hover {
+    transform: translateY(-8px);
+    background-color: #222222;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .role-name {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .opera-info {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #94a3b8; /* Muted blue-gray */
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+  }
+
+  .role-description {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #cecece;
+    font-weight: 300;
+  }
+
+  @media (max-width: 480px) {
+    .role-card {
+      padding: 3rem 1.5rem;
+    }
+    .role-name {
+      font-size: 1.875rem;
+    }
+  }
+</style>

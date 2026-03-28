@@ -1,0 +1,128 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+
+const today = new Date()
+// Ensure we handle the comparison correctly by setting today to the beginning of the day for date_start comparison
+today.setHours(0, 0, 0, 0)
+
+const allEvents = (blok.actuaciones || []).sort((a: any, b: any) => {
+  return new Date(a.date_start).getTime() - new Date(b.date_start).getTime()
+})
+
+const upcomingEvents = allEvents.filter((event: any) => {
+  const eventDate = new Date(event.date_start)
+  return eventDate >= today
+})
+
+const pastEvents = allEvents
+  .filter((event: any) => {
+    const eventDate = new Date(event.date_start)
+    return eventDate < today
+  })
+  .reverse() // Most recent past events first
+---
+
+<section {...storyblokEditable(blok)} class="actuaciones-list-section">
+  <div class="container">
+    {upcomingEvents.length > 0 && (
+      <div class="section-group">
+        <div class="list-header">
+          <h2 class="list-title">{blok.title || "Próximas Actuaciones"}</h2>
+          {blok.season_label && <span class="season-label">{blok.season_label}</span>}
+        </div>
+
+        <div class="events-container">
+          {upcomingEvents.map((eventBlok: any) => (
+            <StoryblokComponent blok={eventBlok} />
+          ))}
+        </div>
+      </div>
+    )}
+
+    {pastEvents.length > 0 && (
+      <div class="section-group archive-section">
+        <div class="list-header">
+          <h2 class="list-title archive-title">Actuaciones Pasadas</h2>
+        </div>
+
+        <div class="events-container">
+          {pastEvents.map((eventBlok: any) => (
+            <StoryblokComponent blok={eventBlok} isPast={true} />
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .actuaciones-list-section {
+    padding: 6rem 0 10rem 0;
+    background-color: #000000;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 6rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .list-title {
+    font-family: var(--font-body);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .season-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .section-group {
+    margin-bottom: 8rem;
+  }
+
+  .archive-section {
+    margin-top: 10rem;
+  }
+
+  .archive-title {
+    opacity: 0.9;
+    font-style: italic;
+  }
+
+  .events-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .list-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+    .list-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>

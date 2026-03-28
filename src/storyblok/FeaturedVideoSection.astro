@@ -1,0 +1,219 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+
+// Limit to the last two videos
+const featuredVideos = (blok.video_items || []).slice(0, 2)
+---
+
+<section {...storyblokEditable(blok)} class="featured-videos-section">
+  <div class="container">
+    <div class="section-header">
+      {blok.label && <span class="archive-label">{blok.label}</span>}
+      <h2 class="section-title">{blok.description}</h2>
+    </div>
+
+    <div class="videos-grid">
+      {featuredVideos.map((videoBlok: any) => (
+        <div class="featured-video-item">
+          <!-- Main Thumbnail Area -->
+          <a 
+            href={videoBlok.video_url?.cached_url || videoBlok.video_url?.url || "#"} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="media-container hover-effect"
+          >
+            <img 
+              src={videoBlok.media_file?.filename} 
+              alt={videoBlok.media_file?.alt || "Video thumbnail"} 
+              class="media-image" 
+            />
+            
+            <div class="play-overlay">
+              <div class="play-button">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Content Below -->
+          <div class="video-info">
+            <h3 class="video-title">{videoBlok.caption?.split('-')[0].trim() || "Video Title"}</h3>
+            <p class="video-description">{videoBlok.caption?.includes('-') ? videoBlok.caption.split('-')[1].trim() : "Grabación en directo"}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-videos-section {
+    padding: 8rem 0;
+    background-color: #000000;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .archive-label {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 300;
+    font-style: italic; /* Design requirement */
+    color: #ffffff;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
+  }
+
+  .featured-video-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .media-container {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    border-radius: 1.5rem; /* Reduced rounding as requested */
+    overflow: hidden;
+    background-color: #111;
+  }
+
+  .media-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .hover-effect:hover .media-image {
+    transform: scale(1.05);
+  }
+
+  /* Large Play Button Overlay */
+  .play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .hover-effect:hover .play-overlay {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  .play-button {
+    width: 100px; /* Larger as per design */
+    height: 100px;
+    background-color: #79e5a1; /* Pale mint from design */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .hover-effect:hover .play-button {
+    transform: scale(1.1);
+  }
+
+  .play-icon {
+    width: 45px;
+    height: 45px;
+    color: #1a1a1a;
+    margin-left: 6px;
+  }
+
+  /* Typography Below */
+  .video-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .video-title {
+    font-family: var(--font-body);
+    font-size: 2rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .video-description {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    color: #94a3b8;
+    margin: 0;
+    font-weight: 300;
+  }
+
+  @media (max-width: 1100px) {
+    .videos-grid {
+      gap: 2.5rem;
+    }
+    .play-button {
+      width: 80px;
+      height: 80px;
+    }
+    .play-icon {
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .featured-videos-section {
+      padding: 6rem 0;
+    }
+    .videos-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    .video-title {
+      font-size: 1.75rem;
+    }
+    .archive-label {
+      font-size: 0.75rem;
+    }
+  }
+</style>

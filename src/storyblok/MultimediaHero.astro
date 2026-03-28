@@ -1,0 +1,79 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+---
+
+<header {...storyblokEditable(blok)} class="multimedia-hero">
+  <div class="container">
+    <div class="hero-content">
+      {blok.label && <span class="archive-label">{blok.label}</span>}
+      <h1 class="hero-headline">{blok.headline}</h1>
+      <div class="accent-line"></div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .multimedia-hero {
+    padding-top: 15rem; /* Space for the sticky header */
+    padding-bottom: 6rem;
+    background-color: #000000;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .archive-label {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 8.5rem);
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .accent-line {
+    width: 100px;
+    height: 1px;
+    background-color: var(--color-primary);
+    margin-top: 2rem;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 1024px) {
+    .multimedia-hero {
+      padding-top: 12rem;
+      padding-bottom: 4rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-headline {
+      font-size: 4rem;
+    }
+    .multimedia-hero {
+       padding-top: 10rem;
+    }
+  }
+</style>

@@ -1,0 +1,176 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokImage from '../components/StoryblokImage.astro'
+
+const { blok } = Astro.props
+---
+
+<section {...storyblokEditable(blok)} class="biography-hero">
+  <div class="hero-container">
+    <div class="content-col">
+      {blok.label && <span class="label">{blok.label}</span>}
+      <h1 class="title">{blok.title}</h1>
+      {blok.description && <p class="description">{blok.description}</p>}
+    </div>
+    
+    <div class="image-col">
+      <div class="image-wrapper">
+        {blok.portrait_image && blok.portrait_image.filename && (
+          <div class="portrait-container">
+            <StoryblokImage 
+              src={blok.portrait_image.filename} 
+              alt={blok.portrait_image.alt || blok.title || "Portrait"}
+              class="portrait"
+              width={800}
+            />
+          </div>
+        )}
+        {blok.cita && (
+          <div class="floating-quote">
+            <p>{blok.cita}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .biography-hero {
+    width: 100%;
+    color: var(--color-on-surface);
+    padding-top: 10rem; /* Space for the transparent sticky header */
+    padding-bottom: 5rem;
+    overflow: hidden; /* Prevent floating box from causing horizontal scroll */
+  }
+  
+  .hero-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .content-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-bottom: 1rem;
+    font-family: var(--font-display);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+    color: #ffffff;
+  }
+
+  .description {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #d1d5db;
+    max-width: 90%;
+  }
+
+  .image-col {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 550px; /* Constrain image width elegantly */
+  }
+
+  .portrait-container {
+    width: 100%;
+    border-radius: 2rem;
+    overflow: hidden;
+    /* Soft shadow to pop out from the totally black background */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); 
+  }
+
+  :global(.portrait) {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 4 / 5; /* Impose a pleasing vertical portrait orientation */
+  }
+
+  .floating-quote {
+    position: absolute;
+    bottom: -2.5rem;
+    left: -4rem;
+    background-color: #262626; /* Dark slate gray box */
+    padding: 1.5rem 2rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    max-width: 80%;
+    z-index: 10;
+  }
+
+  .floating-quote p {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      padding-top: 2rem; 
+    }
+
+    .content-col {
+      align-items: center;
+      text-align: center;
+    }
+
+    .description {
+      max-width: 100%;
+    }
+
+    .image-col {
+      justify-content: center;
+      padding-bottom: 3rem; /* Room for the floating quote at the bottom */
+      padding-left: 1rem; /* Balances the negative margin of quote */
+    }
+
+    .floating-quote {
+      left: -1rem; /* Pull slightly less outside on mobile */
+      bottom: -2rem;
+      max-width: 90%;
+      padding: 1.25rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .floating-quote {
+      left: 5%;
+      right: 5%;
+      width: 90%;
+      text-align: center;
+    }
+  }
+</style>

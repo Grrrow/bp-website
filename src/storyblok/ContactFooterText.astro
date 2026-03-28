@@ -1,0 +1,45 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+
+const text = blok.text
+---
+
+{text && (
+  <div {...storyblokEditable(blok)} class="contact-footer-text">
+    <div class="containerSmall">
+      <p class="paragraph">{text}</p>
+    </div>
+  </div>
+)}
+
+<style>
+  .contact-footer-text {
+    padding: 6rem 0 10rem 0;
+    text-align: center;
+  }
+
+  .containerSmall {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .paragraph {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #94a3b8;
+    font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    .paragraph {
+      font-size: 1rem;
+    }
+    .contact-footer-text {
+        padding: 4rem 0 6rem 0;
+    }
+  }
+</style>

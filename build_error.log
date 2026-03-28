@@ -1,0 +1,42 @@
+
+> bernaperles@0.0.1 build
+> astro build
+
+10:48:31 [content] Syncing content
+10:48:31 [content] Synced content
+10:48:31 [types] Generated 20ms
+10:48:31 [build] output: "static"
+10:48:31 [build] mode: "static"
+10:48:31 [build] directory: /Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/
+10:48:31 [build] Collecting build info...
+10:48:31 [build] ✓ Completed in 28ms.
+10:48:31 [build] Building static entrypoints...
+10:48:32 [vite] ✓ built in 1.17s
+10:48:32 [build] ✓ Completed in 1.19s.
+
+ building client (vite) 
+10:48:32 [vite] transforming...
+10:48:33 [vite] ✓ 3 modules transformed.
+10:48:33 [vite] rendering chunks...
+10:48:33 [vite] computing gzip size...
+10:48:33 [vite] dist/_astro/page.DrMmM6oR.js  788.95 kB │ gzip: 161.19 kB
+10:48:33 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+10:48:33 [vite] ✓ built in 693ms
+
+ generating static routes 
+10:48:33 ▶ src/pages/en/[...slug].astro
+10:48:33   ├─ /en/biografia/index.htmlNo component found for blok "biography_trajectory_section". 
+      Make sure the component is:
+      • Registered in your astro.config.mjs, or
+      • Placed in the "/src/storyblok" folder, or
+      • Enable the "fallbackComponent" option to handle missing components.
+  Stack trace:
+    at file:///Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/chunks/Layout_CutQFBY0.mjs:36201:11
+    at AstroComponentInstance.init (file:///Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/chunks/astro/server_CJawK-jp.mjs:1465:29)
+    at Object.render (file:///Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/chunks/astro/server_CJawK-jp.mjs:1864:23)
+    at file:///Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/chunks/astro/server_CJawK-jp.mjs:969:18
+    at createBufferedRenderer (file:///Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/chunks/astro/server_CJawK-jp.mjs:807:10)

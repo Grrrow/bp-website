@@ -1,0 +1,77 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+---
+
+<section {...storyblokEditable(blok)} class="award-section">
+  <div class="container">
+    <div class="header">
+      {blok.label && <span class="section-label">{blok.label}</span>}
+      <h2 class="section-headline">{blok.headline}</h2>
+    </div>
+    
+    <div class="award-list">
+      {blok.award_list && blok.award_list.map((subblok) => (
+        <StoryblokComponent blok={subblok} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .award-section {
+    padding: 8rem 0;
+    background-color: #000000; /* True black background as shown in design */
+    color: var(--color-on-surface);
+  }
+
+  .container {
+    max-width: 1000px; /* More constrained for better focus on content */
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 6rem;
+  }
+
+  .section-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .section-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .award-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem; /* Spacing between award items */
+  }
+
+  @media (max-width: 768px) {
+    .award-section {
+      padding: 6rem 0;
+    }
+    .header {
+      margin-bottom: 4rem;
+    }
+    .award-list {
+      gap: 3.5rem;
+    }
+  }
+</style>
