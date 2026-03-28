@@ -281,18 +281,21 @@ const homeUrl = lang === 'es' ? '/' : '/en';
 
 <script>
   // Script runs on client side to handle toggle without Framework JS
+  // Use a persistent object to store state and shared functions
+  let scrollHandler: any = null;
+
   const initMobileMenu = () => {
-    const header = document.querySelector('.global-header');
-    const hamburger = document.querySelector('.hamburger-btn');
+    const header = document.querySelector('.global-header') as HTMLElement;
+    const hamburger = document.querySelector('.hamburger-btn') as HTMLElement;
     
     if (!header || !hamburger) return;
 
-    // Reset purely in case of hot-reload states or navigations
+    // 1. Reset state on new page load
     header.classList.remove('menu-open');
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
 
-    // Scroll Logic for Sticky Header
+    // 2. Scroll Logic with leak prevention
     const handleScroll = () => {
       if (window.scrollY > 50) {
         header.classList.add('scrolled');
@@ -301,46 +304,41 @@ const homeUrl = lang === 'es' ? '/' : '/en';
       }
     };
     
-    // Initial check and setup listener
-    handleScroll();
-    window.removeEventListener('scroll', handleScroll); // Clean in case of hot reload
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
+    scrollHandler = handleScroll;
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    handleScroll(); // Initial check
 
+    // 3. Menu Toggle Logic
     const toggleMenu = () => {
       const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
       hamburger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
       
       if (!isExpanded) {
         header.classList.add('menu-open');
-        document.body.style.overflow = 'hidden'; // Lock body scroll perfectly
+        document.body.style.overflow = 'hidden';
       } else {
         header.classList.remove('menu-open');
         document.body.style.overflow = '';
       }
     };
 
-    // Clean existing listener properly to avoid stacking duplicates
-    hamburger.removeEventListener('click', toggleMenu);
-    hamburger.addEventListener('click', toggleMenu);
+    hamburger.onclick = toggleMenu; // Using onclick instead of addEventListener for easy replacement/no-duplication
 
-    // Close menu when clicking a navigation link or language picker smoothly
-    const links = header.querySelectorAll('.nav-item-animate a, .nav-item-animate select, .logo');
+    // 4. Link Clicks
+    const links = header.querySelectorAll('.nav-item-animate a, .logo');
     links.forEach(link => {
-      link.addEventListener('click', () => {
+      (link as HTMLElement).onclick = () => {
         header.classList.remove('menu-open');
         hamburger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
-      });
+      };
     });
   }
 
-  // Support Astro View Transitions if enabled
+  // Subscribe to page loads
   document.addEventListener('astro:page-load', initMobileMenu);
   
-  // Fallback for first load if no view transitions
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMobileMenu);
-  } else {
-    initMobileMenu();
-  }
+  // Initial run
+  initMobileMenu();
 </script>

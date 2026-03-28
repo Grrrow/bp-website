@@ -4,15 +4,16 @@ import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import LanguagePicker from '../components/LanguagePicker.astro';
 import { useTranslations } from '../i18n/utils';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
 	lang: 'es' | 'en';
 	description?: string;
-	image?: string;
+	image?: string; // SEO image from Storyblok, no default fallback
 }
 
-const { title, lang, description = "Soprano Berna Perles", image = "/default-og.png" } = Astro.props;
+const { title, lang, description = "Soprano Berna Perles", image = "" } = Astro.props;
 const t = useTranslations(lang);
 
 const storyblokApi = useStoryblokApi();
@@ -28,6 +29,31 @@ try {
   console.log("Layout: Error fetching global config. Please verify STORYBLOK_TOKEN.");
 }
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Astro.url.pathname === '/en/' || Astro.url.pathname === '/home' || Astro.url.pathname === '/en/home';
+
+// SEO URL Logic
+const siteUrl = 'https://bernaperles.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString().replace(/\/$/, '');
+
+const isEn = lang === 'en';
+const esPath = isEn ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname;
+const enPath = isEn ? Astro.url.pathname : `/en${Astro.url.pathname === '/' ? '' : Astro.url.pathname}`;
+
+const esUrl = new URL(esPath, siteUrl).toString().replace(/\/$/, '');
+const enUrl = new URL(enPath, siteUrl).toString().replace(/\/$/, '');
+
+// Structured Data
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Berna Perles",
+  "url": siteUrl,
+  "jobTitle": "Soprano",
+  "description": "Soprano malagueña de trayectoria internacional.",
+  "sameAs": [
+    "https://www.instagram.com/bernaperles_soprano/",
+    "https://www.facebook.com/berna.perles"
+  ]
+};
 ---
 
 <!doctype html>
@@ -36,8 +62,27 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" type="image/x-icon" href="/favico.ico" />
+    <link rel="shortcut icon" href="/favico.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={esUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} defer />
+
+    <!-- Google Fonts Preconnect & Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    </noscript>
+    
+    {image && <link rel="preload" as="image" href={image} fetchpriority="high" />}
 		
 		<!-- SEO & Open Graph Tags -->
 		<title>{title}</title>
@@ -57,7 +102,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
           <StoryblokComponent blok={headerBlok} />
         ))}
         
-        <main class:list={{ 'pt-header': !isHome }}>
+        <main class:list={{ 'pt-header': !isHome }} transition:animate="fade">
           <slot />
         </main>
 
@@ -73,7 +118,7 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
             <LanguagePicker />
           </div>
         </header>
-        <main class:list={{ 'pt-header': !isHome }}>
+        <main class:list={{ 'pt-header': !isHome }} transition:animate="fade">
           <slot />
         </main>
       </>

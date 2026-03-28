@@ -1,6 +1,7 @@
 ---
 import { storyblokEditable } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import StoryblokImage from '../components/StoryblokImage.astro'
 
 const { blok } = Astro.props
 
@@ -25,9 +26,11 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
             rel="noopener noreferrer" 
             class="media-container hover-effect"
           >
-            <img 
+            <StoryblokImage 
               src={videoBlok.media_file?.filename} 
               alt={videoBlok.media_file?.alt || "Video thumbnail"} 
+              width={800}
+              height={450}
               class="media-image" 
             />
             

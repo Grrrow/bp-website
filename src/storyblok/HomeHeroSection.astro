@@ -11,10 +11,17 @@ const opacity = blok.overlay_opacity || '0.5'
 
 <section {...storyblokEditable(blok)} class="hero-section">
   {bgImage && (
-    <div 
-      class="hero-bg" 
-      style={`background-image: url('${bgImage}/m/1920x1080/smart/filters:quality(85)');`}
-    >
+    <div class="hero-bg">
+      <StoryblokImage 
+        src={bgImage} 
+        alt={blok.background_image?.alt || "Berna Perles Background"}
+        width={1920}
+        height={1080}
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+        sizes="100vw"
+      />
       <div class="hero-overlay" style={`background-color: rgba(0, 0, 0, ${opacity});`}></div>
     </div>
   )}
@@ -59,9 +66,15 @@ const opacity = blok.overlay_opacity || '0.5'
     width: 100%;
     height: 100%;
     z-index: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  }
+
+  :global(.hero-img),
+  :global(.hero-img img) {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: auto !important;
   }
 
   .hero-overlay {

@@ -22,6 +22,8 @@ const { blok } = Astro.props
               alt={blok.portrait_image.alt || blok.title || "Portrait"}
               class="portrait"
               width={800}
+              loading="eager"
+              fetchpriority="high"
             />
           </div>
         )}
@@ -136,10 +138,16 @@ const { blok } = Astro.props
   }
 
   @media (max-width: 1024px) {
+    .hero-headline {
+      font-size: 3rem;
+    }
+    .biography-hero {
+      padding-top: 4rem; /* Reduced from 10rem to account for pt-header and mobile viewport */
+    }
     .hero-container {
       grid-template-columns: 1fr;
-      gap: 4rem;
-      padding-top: 2rem; 
+      gap: 3rem;
+      padding-top: 1rem; 
     }
 
     .content-col {

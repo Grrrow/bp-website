@@ -10,7 +10,7 @@ const { blok } = Astro.props
     <h2 class="section-title">{blok.title}</h2>
     
     <div class="roles-grid">
-      {blok.roles_list && blok.roles_list.map((subblok) => (
+      {blok.roles_list && blok.roles_list.map((subblok: any) => (
         <StoryblokComponent blok={subblok} />
       ))}
     </div>
@@ -56,7 +56,7 @@ const { blok } = Astro.props
       grid-template-columns: repeat(2, 1fr);
     }
     .featured-roles-section {
-      padding: 6rem 0;
+      padding: 4rem 0;
     }
   }
 

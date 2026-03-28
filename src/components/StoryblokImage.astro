@@ -28,11 +28,11 @@ const {
   alt, 
   width, 
   height, 
-  quality = 85,
+  quality = 75,
   class: className,
   loading = 'lazy',
   fetchpriority = 'auto',
-  sizes,
+  sizes = '(max-width: 639px) 100vw, (max-width: 1023px) 80vw, 1200px',
   smart = true
 } = Astro.props;
 
@@ -83,6 +83,7 @@ const defaultSrc = isStoryblok ? getTransform(width, height || 0) : src;
     loading={loading} 
     fetchpriority={fetchpriority}
     decoding="async"
+    style="background: transparent;"
   />
 </picture>
 
@@ -97,5 +98,13 @@ const defaultSrc = isStoryblok ? getTransform(width, height || 0) : src;
     object-fit: cover;
     /* Impeccable CLS prevention: reserve the space before the image arrives */
     aspect-ratio: var(--width) / var(--height);
+    /* Prevent "flash" by fading in smoothly */
+    animation: fadeIn 0.6s ease-out;
+    background-color: #000000;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 </style>

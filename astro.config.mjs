@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import { storyblok } from '@storyblok/astro';
+import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
@@ -8,10 +9,12 @@ const env = loadEnv("", process.cwd(), 'STORYBLOK');
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://bernaperles.com',
   vite: {
     plugins: [basicSsl()]
   },
   integrations: [
+    sitemap(),
     storyblok({
       accessToken: env.STORYBLOK_TOKEN,
       components: {
@@ -60,5 +63,9 @@ export default defineConfig({
     routing: {
       prefixDefaultLocale: false
     }
+  },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
   }
 });
