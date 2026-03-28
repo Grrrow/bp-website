@@ -14,7 +14,12 @@ const homeUrl = lang === 'es' ? '/' : '/en';
   <nav class="nav-container">
     <a href={homeUrl} class="logo">
       {blok.logo && blok.logo.filename ? (
-        <img src={blok.logo.filename} alt={blok.logo.alt || "Logo"} />
+        <img 
+          src={blok.logo.filename} 
+          alt={blok.logo.alt || "Logo"} 
+          width="249" 
+          height="32" 
+        />
       ) : (
         <div class="logo-text"><strong>Berna</strong> <em>Perles</em></div>
       )}

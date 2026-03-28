@@ -1,110 +1,120 @@
 ---
 /**
  * StoryblokImage.astro
- * An impeccable, high-performance image component tailored for Storyblok.
- * Features:
- * - <picture> tag for serving AVIF with WebP/JPEG fallbacks.
- * - Retina/Hi-DPI support (1x, 1.5x, 2x) via srcset.
- * - Smart cropping based on Storyblok focal point.
- * - CLS (Cumulative Layout Shift) prevention by forcing aspect ratio.
- * - LCP (Largest Contentful Paint) optimization via loading and fetchpriority.
+ * Componente de alto rendimiento optimizado para Core Web Vitals.
+ * Implementa <picture> con formatos AVIF/WebP y srcset adaptativo.
  */
 
-export interface Props {
+interface Props {
   src: string;
   alt: string;
-  width: number;
+  width?: number;
   height?: number;
   quality?: number;
-  class?: string;
+  smart?: boolean;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
   sizes?: string;
-  smart?: boolean; // Enable Storyblok smart cropping
+  aspectRatio?: string;
 }
 
-const { 
-  src, 
-  alt, 
-  width, 
-  height, 
-  quality = 75,
-  class: className,
+const {
+  src,
+  alt,
+  width,
+  height,
+  quality = 80,
+  smart = true,
   loading = 'lazy',
   fetchpriority = 'auto',
-  sizes = '(max-width: 639px) 100vw, (max-width: 1023px) 80vw, 1200px',
-  smart = true
+  class: className,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px',
+  aspectRatio: customAspectRatio,
 } = Astro.props;
 
 if (!src) return null;
 
 const isStoryblok = src.includes('a.storyblok.com');
 
-// Helper to build the transformation string
-const getTransform = (w: number, h: number = 0, format?: string) => {
+/**
+ * Genera la URL optimizada para un ancho y formato específicos.
+ */
+const getUrl = (w: number | string, f: 'webp' | 'avif' | 'original' = 'webp') => {
   if (!isStoryblok) return src;
   
-  let options = `m/${w}x${h}/`;
-  if (smart) options += 'smart/';
+  const baseUrl = src.replace('https://a.storyblok.com', '');
+  // Calculamos el alto proporcional si existe el original para mantener aspect ratio
+  const h = height && width ? Math.round(Number(height) * (Number(w) / width)) : '';
+  
+  let transform = `/m/${w}x${h}/`;
+  if (smart) transform += 'smart/';
   
   const filters = [];
-  if (format) filters.push(`format(${format})`);
+  if (f !== 'original') filters.push(`format(${f})`);
   filters.push(`quality(${quality})`);
-  filters.push('no_upscale()'); // Prevent blurring by enlarging small assets
+  filters.push('no_upscale()');
   
-  return `${src}/${options}filters:${filters.join(':')}`;
+  return `https://a.storyblok.com${baseUrl}${transform}filters:${filters.join(':')}`;
 };
 
-// Generate srcset for a specific format
-const getSrcset = (w: number, h: number = 0, format?: string) => {
-  const s1 = getTransform(w, h, format);
-  const s1_5 = getTransform(Math.round(w * 1.5), Math.round(h * 1.5), format);
-  const s2 = getTransform(w * 2, h * 2, format);
-  return `${s1} 1x, ${s1_5} 1.5x, ${s2} 2x`;
+/**
+ * Genera el srcset para un formato dado.
+ */
+const getSrcset = (f: 'webp' | 'avif') => {
+  if (!isStoryblok) return null;
+  // Breakpoints estándar para optimización adaptativa
+  const widths = [400, 800, 1200, 1600];
+  return widths
+    .map(w => `${getUrl(w, f)} ${w}w`)
+    .join(', ');
 };
 
-const avifSet = isStoryblok ? getSrcset(width, height || 0, 'avif') : null;
-const webpSet = isStoryblok ? getSrcset(width, height || 0, 'webp') : null;
-const defaultSrc = isStoryblok ? getTransform(width, height || 0) : src;
+const avifSrcset = isStoryblok ? getSrcset('avif') : null;
+const webpSrcset = isStoryblok ? getSrcset('webp') : null;
+const fallbackUrl = width ? getUrl(width, 'webp') : src;
+
+// Lógica de Aspect Ratio para reservar espacio (CLS)
+const finalAspectRatio = customAspectRatio || (width && height ? `${width} / ${height}` : undefined);
 ---
 
-<picture class={className}>
+<picture class:list={['sb-picture', className]}>
   {isStoryblok && (
     <>
-      <source type="image/avif" srcset={avifSet} sizes={sizes} />
-      <source type="image/webp" srcset={webpSet} sizes={sizes} />
+      <source type="image/avif" srcset={avifSrcset} sizes={sizes} />
+      <source type="image/webp" srcset={webpSrcset} sizes={sizes} />
     </>
   )}
-  <img 
-    src={defaultSrc} 
-    alt={alt} 
-    width={width} 
-    height={height} 
-    loading={loading} 
+  <img
+    src={fallbackUrl}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
     fetchpriority={fetchpriority}
     decoding="async"
-    style="background: transparent;"
+    style={finalAspectRatio ? `aspect-ratio: ${finalAspectRatio};` : ''}
   />
 </picture>
 
-<style define:vars={{ width, height: height || 'auto' }}>
-  picture {
+<style>
+  .sb-picture {
     display: block;
     line-height: 0;
   }
+  
   img {
-    max-width: 100%;
+    display: block;
+    width: 100%;
     height: auto;
+    max-width: 100%;
     object-fit: cover;
-    /* Impeccable CLS prevention: reserve the space before the image arrives */
-    aspect-ratio: var(--width) / var(--height);
-    /* Prevent "flash" by fading in smoothly */
-    animation: fadeIn 0.6s ease-out;
-    background-color: #000000;
+    background-color: rgba(31, 32, 32, 0.3);
+    transition: opacity 0.5s ease-in;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  /* Evitar transición en LCP para máxima velocidad percibida */
+  img[loading="eager"] {
+    transition: none;
   }
 </style>

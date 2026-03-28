@@ -72,6 +72,10 @@ const personSchema = {
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="x-default" href={esUrl} />
 
+    <!-- Performance Hints -->
+    <link rel="preconnect" href="https://a.storyblok.com">
+    <link rel="dns-prefetch" href="https://a.storyblok.com">
+    
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} defer />
 
     <!-- Google Fonts Preconnect & Link -->
@@ -82,18 +86,25 @@ const personSchema = {
       <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     </noscript>
     
-    {image && <link rel="preload" as="image" href={image} fetchpriority="high" />}
+    {image && (
+      <link 
+        rel="preload" 
+        as="image" 
+        href={`${image}/m/1200x630/filters:format(webp):quality(80)`} 
+        fetchpriority="high" 
+      />
+    )}
 		
 		<!-- SEO & Open Graph Tags -->
 		<title>{title}</title>
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
-		{image && <meta property="og:image" content={image} />}
+		{image && <meta property="og:image" content={`${image}/m/1200x630/filters:format(webp):quality(80)`} />}
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		{image && <meta name="twitter:image" content={image} />}
+		{image && <meta name="twitter:image" content={`${image}/m/1200x630/filters:format(webp):quality(80)`} />}
 	</head>
 	<body>
     {globalConfig ? (

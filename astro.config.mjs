@@ -17,6 +17,7 @@ export default defineConfig({
     sitemap(),
     storyblok({
       accessToken: env.STORYBLOK_TOKEN,
+      bridge: process.env.NODE_ENV !== 'production', // Solo cargar el bridge en desarrollo/preview
       components: {
         page: 'storyblok/Page',
         teaser: 'storyblok/Teaser',

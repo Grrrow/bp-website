@@ -18,8 +18,12 @@
     "astro": "^5.4.0"
   },
   "devDependencies": {
+    "@formatjs/icu-messageformat-parser": "^3.5.3",
     "@storyblok/astro": "^8.1.0",
     "@types/node": "^25.5.0",
-    "@vitejs/plugin-basic-ssl": "^2.2.0"
+    "@vitejs/plugin-basic-ssl": "^2.2.0",
+    "intl-messageformat": "^11.2.0",
+    "puppeteer": "^24.40.0",
+    "unlighthouse": "^0.17.7"
   }
 }
