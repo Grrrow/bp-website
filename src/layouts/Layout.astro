@@ -25,7 +25,7 @@ const storyblokApi = useStoryblokApi();
 let globalConfig = null;
 
 try {
-	const isPreview = import.meta.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
+	const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
 	const { data } = await storyblokApi.get(
 		`cdn/stories/configuracion-general`,
 		{

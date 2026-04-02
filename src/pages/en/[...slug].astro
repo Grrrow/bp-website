@@ -14,7 +14,7 @@ if (slug === 'home') {
 }
 
 const targetSlug = slug || 'home';
-const isPreview = import.meta.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
+const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
 const storyblokApi = useStoryblokApi();
 let story = null;
 
@@ -32,7 +32,7 @@ export async function getStaticPaths() {
   const storyblokApi = useStoryblokApi();
   try {
     const { data } = await storyblokApi.get('cdn/stories', {
-      version: import.meta.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview' ? 'draft' : 'published',
+      version: process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview' ? 'draft' : 'published',
       language: 'en',
     });
 
