@@ -16,7 +16,10 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^8.2.11",
-    "astro": "^5.4.0"
+    "@google/genai": "^1.48.0",
+    "astro": "^5.4.0",
+    "axios": "^1.14.0",
+    "dotenv": "^17.4.0"
   },
   "devDependencies": {
     "@formatjs/icu-messageformat-parser": "^3.5.3",
