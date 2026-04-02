@@ -19,16 +19,18 @@ try {
 	console.log("Maintenance: Error fetching global config for contact info.");
 }
 
-const footerBlok = globalConfig?.content?.footer?.[0];
-const managementTitle = footerBlok?.management_title || 'Representación';
-const contactItems = footerBlok?.contact_details_block || [];
+const managementTitle = 'MANAGEMENT';
+const contactItems = [
+  { display_content: 'Emanuele Destrini (TACT Artists Management)', type: 'text' },
+  { display_content: 'emanuele@tact4art.com', type: 'email' },
+  { display_content: '(34) 660568705', type: 'phone' }
+];
 
 // Helper to determine link href
 const getContactHref = (item: any) => {
-  const type = item.item_type?.toLowerCase();
-  if (type === 'email') return `mailto:${item.display_content}`;
-  if (type === 'phone') return `tel:${item.display_content.replace(/\s+/g, '')}`;
-  return item.action_link?.url || '#';
+  if (item.type === 'email') return `mailto:${item.display_content}`;
+  if (item.type === 'phone') return `tel:${item.display_content.replace(/[\(\)\s+]/g, '')}`;
+  return '#';
 };
 ---
 
@@ -89,9 +91,13 @@ const getContactHref = (item: any) => {
 						<h3>{managementTitle}</h3>
 						<div class="contact-links">
 							{contactItems.map((item: any) => (
-								<a href={getContactHref(item)} class="contact-item">
-									{item.display_content}
-								</a>
+								item.type === 'email' || item.type === 'phone' ? (
+									<a href={getContactHref(item)} class="contact-item">
+										{item.display_content}
+									</a>
+								) : (
+									<span class="contact-item text">{item.display_content}</span>
+								)
 							))}
 						</div>
 					</div>
