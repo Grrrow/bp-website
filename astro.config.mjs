@@ -10,7 +10,7 @@ const env = loadEnv("", process.cwd(), 'STORYBLOK');
 
 // https://astro.build/config
 export default defineConfig({
-  output: process.env.PUBLIC_IS_PREVIEW === 'true' ? 'server' : 'static',
+  output: process.env.STORYBLOK_IS_PREVIEW === 'true' || process.env.VERCEL_ENV === 'preview' ? 'server' : 'static',
   adapter: vercel(),
   site: 'https://bernaperles.com',
   vite: {
