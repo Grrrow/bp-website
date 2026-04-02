@@ -253,6 +253,16 @@ const personSchema = {
 				storyblokInstance.on(['published', 'change'], () => {
 					location.reload(true);
 				});
+
+				// Para componentes puramente .astro (HTML sin JS Reactivo), 
+				// simulamos el Live Preview recargando la página cuando el usuario pausa de teclear.
+				let typingTimer;
+				storyblokInstance.on('input', (event) => {
+					clearTimeout(typingTimer);
+					typingTimer = setTimeout(() => {
+						location.reload(true);
+					}, 400); // 400ms de retraso para no saturar al escribir
+				});
 			}
 		};
 		document.head.appendChild(script);
