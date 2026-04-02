@@ -25,8 +25,8 @@ const storyblokApi = useStoryblokApi();
 let globalConfig = null;
 
 try {
-	const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
-	const requestedVersion = isPreview ? 'draft' : 'published';
+	const isPreview = true;
+	const requestedVersion = 'draft';
 
 	console.log('--- ENTORNO STORYBLOK (Layout.astro) ---');
 	console.log('process.env.STORYBLOK_IS_PREVIEW:', process.env.STORYBLOK_IS_PREVIEW);
