@@ -1,0 +1,253 @@
+---
+import { useStoryblokApi } from '@storyblok/astro';
+
+const storyblokApi = useStoryblokApi();
+let globalConfig = null;
+
+try {
+	const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
+	const requestedVersion = isPreview ? 'draft' : 'published';
+
+	const { data } = await storyblokApi.get(
+		`cdn/stories/configuracion-general`,
+		{
+			version: requestedVersion,
+		},
+	);
+	globalConfig = data.story;
+} catch (error) {
+	console.log("Maintenance: Error fetching global config for contact info.");
+}
+
+const footerBlok = globalConfig?.content?.footer?.[0];
+const managementTitle = footerBlok?.management_title || 'Representación';
+const contactItems = footerBlok?.contact_details_block || [];
+
+// Helper to determine link href
+const getContactHref = (item: any) => {
+  const type = item.item_type?.toLowerCase();
+  if (type === 'email') return `mailto:${item.display_content}`;
+  if (type === 'phone') return `tel:${item.display_content.replace(/\s+/g, '')}`;
+  return item.action_link?.url || '#';
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Sitio en mantenimiento - Berna Perles" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favico.ico" />
+		<title>Mantenimiento | Berna Perles</title>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style is:global>
+			:root {
+				--color-surface: #0b0c0c;
+				--color-on-surface: #e7e5e4;
+				--color-primary: #A5C4BB;
+				--font-display: 'Noto Serif', serif;
+				--font-body: 'Manrope', sans-serif;
+			}
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: var(--color-surface);
+				color: var(--color-on-surface);
+				font-family: var(--font-body);
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<main class="maintenance-container">
+			<div class="background-glow"></div>
+			
+			<div class="content reveal">
+				<div class="logo-wrapper">
+					<div class="logo-text"><strong>Berna</strong> <em>Perles</em></div>
+				</div>
+				
+				<div class="message">
+					<h1>Próximamente</h1>
+					<p>Estamos preparando algo muy especial. El sitio web oficial de la soprano <strong>Berna Perles</strong> estará disponible muy pronto.</p>
+				</div>
+				
+				{contactItems.length > 0 && (
+					<div class="management-section">
+						<h3>{managementTitle}</h3>
+						<div class="contact-links">
+							{contactItems.map((item: any) => (
+								<a href={getContactHref(item)} class="contact-item">
+									{item.display_content}
+								</a>
+							))}
+						</div>
+					</div>
+				)}
+
+				<div class="divider"></div>
+				
+				<div class="social-links">
+					<a href="https://www.instagram.com/bernaperles_soprano/" target="_blank" rel="noopener noreferrer" class="social-link">Instagram</a>
+					<a href="https://www.facebook.com/berna.perles" target="_blank" rel="noopener noreferrer" class="social-link">Facebook</a>
+				</div>
+			</div>
+		</main>
+
+		<style>
+			.maintenance-container {
+				width: 100%;
+				max-width: 600px;
+				padding: 2rem;
+				text-align: center;
+				position: relative;
+				z-index: 10;
+			}
+
+			.background-glow {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: 80vw;
+				height: 80vh;
+				background: radial-gradient(circle, rgba(165, 196, 187, 0.08) 0%, rgba(11, 12, 12, 0) 70%);
+				z-index: -1;
+				pointer-events: none;
+				animation: pulse 8s infinite alternate ease-in-out;
+			}
+
+			@keyframes pulse {
+				from { opacity: 0.5; transform: translate(-50%, -50%) scale(0.8); }
+				to { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+			}
+
+			.logo-wrapper {
+				margin-bottom: 4rem;
+			}
+
+			.logo-text {
+				font-size: clamp(2rem, 8vw, 3.5rem);
+				font-family: var(--font-display);
+				letter-spacing: 0.05em;
+			}
+
+			.logo-text strong {
+				font-weight: 700;
+			}
+
+			.logo-text em {
+				color: var(--color-primary);
+				font-style: italic;
+				font-weight: normal;
+			}
+
+			.message h1 {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				text-transform: uppercase;
+				letter-spacing: 0.3em;
+				margin-bottom: 1.5rem;
+				color: var(--color-primary);
+				font-weight: 400;
+			}
+
+			.message p {
+				font-size: 1.1rem;
+				line-height: 1.8;
+				opacity: 0.9;
+				max-width: 450px;
+				margin: 0 auto;
+				font-weight: 300;
+			}
+
+			.management-section {
+				margin-top: 3rem;
+				animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+				opacity: 0;
+			}
+
+			.management-section h3 {
+				font-family: var(--font-display);
+				font-size: 0.9rem;
+				text-transform: uppercase;
+				letter-spacing: 0.2em;
+				margin-bottom: 1rem;
+				opacity: 0.6;
+				font-weight: 400;
+			}
+
+			.contact-links {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+
+			.contact-item {
+				color: var(--color-on-surface);
+				text-decoration: none;
+				font-size: 1.1rem;
+				transition: color 0.3s ease;
+			}
+
+			.contact-item:hover {
+				color: var(--color-primary);
+			}
+
+			.divider {
+				width: 40px;
+				height: 1px;
+				background-color: var(--color-primary);
+				margin: 3rem auto;
+				opacity: 0.5;
+			}
+
+			.social-links {
+				display: flex;
+				justify-content: center;
+				gap: 2rem;
+			}
+
+			.social-link {
+				color: var(--color-on-surface);
+				text-decoration: none;
+				font-size: 0.9rem;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				transition: color 0.3s ease;
+				opacity: 0.7;
+			}
+
+			.social-link:hover {
+				color: var(--color-primary);
+				opacity: 1;
+			}
+
+			/* Reveal Animation */
+			.reveal {
+				opacity: 0;
+				transform: translateY(20px);
+				animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+			}
+
+			@keyframes fadeInUp {
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+		</style>
+	</body>
+</html>
