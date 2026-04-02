@@ -59,7 +59,8 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
 <style>
   .featured-videos-section {
     padding: 8rem 0;
-    background-color: #000000;
+    background-color: var(--color-surface);
+    transition: background-color 0.4s ease;
   }
 
   .container {
@@ -80,7 +81,7 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
     font-size: 0.825rem;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    color: #94a3b8;
+    color: var(--color-primary);
     font-weight: 500;
   }
 
@@ -89,7 +90,7 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
     font-size: clamp(3rem, 6vw, 4.5rem);
     font-weight: 300;
     font-style: italic; /* Design requirement */
-    color: #ffffff;
+    color: var(--color-on-surface);
     margin: 0;
     line-height: 1;
   }
@@ -113,7 +114,7 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
     position: relative;
     border-radius: 1.5rem; /* Reduced rounding as requested */
     overflow: hidden;
-    background-color: #111;
+    background-color: var(--color-surface-high);
   }
 
   .media-image {
@@ -179,7 +180,7 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
     font-family: var(--font-body);
     font-size: 2rem;
     font-weight: 500;
-    color: #ffffff;
+    color: var(--color-on-surface);
     margin: 0;
     letter-spacing: -0.01em;
   }
@@ -187,7 +188,8 @@ const featuredVideos = (blok.video_items || []).slice(0, 2)
   .video-description {
     font-family: var(--font-body);
     font-size: 1.125rem;
-    color: #94a3b8;
+    color: var(--color-on-surface);
+    opacity: 0.7;
     margin: 0;
     font-weight: 300;
   }

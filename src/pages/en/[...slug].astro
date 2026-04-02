@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 
-export const prerender = true;
 import { getLangFromUrl } from '../../i18n/utils';
 
 const { slug } = Astro.params;
@@ -15,12 +14,13 @@ if (slug === 'home') {
 }
 
 const targetSlug = slug || 'home';
+const isPreview = import.meta.env.PUBLIC_IS_PREVIEW === 'true' || import.meta.env.DEV;
 const storyblokApi = useStoryblokApi();
 let story = null;
 
 try {
   const { data } = await storyblokApi.get(`cdn/stories/${targetSlug}`, {
-    version: 'draft',
+    version: isPreview ? 'draft' : 'published',
     language: 'en',
   });
   story = data.story;
@@ -32,7 +32,7 @@ export async function getStaticPaths() {
   const storyblokApi = useStoryblokApi();
   try {
     const { data } = await storyblokApi.get('cdn/stories', {
-      version: 'draft',
+      version: import.meta.env.PUBLIC_IS_PREVIEW === 'true' || import.meta.env.DEV ? 'draft' : 'published',
       language: 'en',
     });
 

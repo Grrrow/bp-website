@@ -39,8 +39,9 @@ const renderedRichText = renderRichText(blok.content)
 <style>
   .trajectory-section {
     padding: 8rem 0;
-    background-color: #0c0c0c; /* Deep black to match the design */
+    background-color: var(--color-surface-low);
     color: var(--color-on-surface);
+    transition: background-color 0.4s ease, color 0.4s ease;
     overflow: hidden;
   }
 
@@ -78,7 +79,7 @@ const renderedRichText = renderRichText(blok.content)
     font-weight: 300;
     line-height: 1.1;
     margin: 0;
-    color: #ffffff;
+    color: var(--color-on-surface);
     letter-spacing: -0.01em;
   }
 
@@ -86,8 +87,11 @@ const renderedRichText = renderRichText(blok.content)
     font-family: var(--font-body);
     font-size: 1.1rem;
     line-height: 1.9;
-    color: #a0a0a0; /* Muted gray for premium feel */
+    color: var(--color-on-surface);
+    opacity: 0.8;
     max-width: 85%;
+    text-align: justify;
+    hyphens: auto;
   }
 
   .trajectory-text :global(p) {
@@ -99,7 +103,7 @@ const renderedRichText = renderRichText(blok.content)
   }
 
   .trajectory-text :global(em) {
-    color: #e0e0e0;
+    color: var(--color-primary);
     font-style: italic;
   }
 
@@ -116,8 +120,8 @@ const renderedRichText = renderRichText(blok.content)
     border-radius: 50%;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.9);
-    border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle highlight */
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    border: 1px solid var(--color-outline-variant);
   }
 
   :global(.trajectory-img) {

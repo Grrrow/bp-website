@@ -18,7 +18,8 @@ const { blok } = Astro.props
   .actuaciones-hero {
     padding-top: 15rem; /* Space for the sticky header */
     padding-bottom: 4rem;
-    background-color: #000000;
+    background-color: var(--color-surface);
+    transition: background-color 0.4s ease;
   }
 
   .container {
@@ -39,7 +40,7 @@ const { blok } = Astro.props
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    color: #94a3b8;
+    color: var(--color-primary);
     font-weight: 500;
   }
 
@@ -47,7 +48,7 @@ const { blok } = Astro.props
     font-family: var(--font-display);
     font-size: clamp(3.5rem, 9vw, 6.5rem); /* Balanced size */
     font-weight: 300;
-    color: #ffffff;
+    color: var(--color-on-surface);
     line-height: 1.1;
     margin: 0;
     letter-spacing: -0.01em;

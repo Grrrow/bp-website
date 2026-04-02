@@ -4,11 +4,14 @@ import { storyblok } from '@storyblok/astro';
 import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import vercel from '@astrojs/vercel';
 
 const env = loadEnv("", process.cwd(), 'STORYBLOK');
 
 // https://astro.build/config
 export default defineConfig({
+  output: process.env.PUBLIC_IS_PREVIEW === 'true' ? 'server' : 'static',
+  adapter: vercel(),
   site: 'https://bernaperles.com',
   vite: {
     plugins: [basicSsl()]
@@ -16,8 +19,8 @@ export default defineConfig({
   integrations: [
     sitemap(),
     storyblok({
-      accessToken: env.STORYBLOK_TOKEN,
-      bridge: process.env.NODE_ENV !== 'production', // Solo cargar el bridge en desarrollo/preview
+      accessToken: env.STORYBLOK_TOKEN || process.env.STORYBLOK_TOKEN || '',
+      bridge: true, // Habilitar bridge siempre para que sea clickable en el editor visual de Storyblok
       components: {
         page: 'storyblok/Page',
         teaser: 'storyblok/Teaser',

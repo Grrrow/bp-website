@@ -78,7 +78,8 @@ const videoLabel = blok.video_tab_label || "Videos"
 <style>
   .multimedia-gallery-section {
     padding: 4rem 0 10rem 0;
-    background-color: #000000;
+    background-color: var(--color-surface);
+    transition: background-color 0.4s ease;
   }
 
   .container {
@@ -92,13 +93,14 @@ const videoLabel = blok.video_tab_label || "Videos"
     justify-content: center;
     gap: 4rem;
     margin-bottom: 5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--color-outline-variant);
   }
 
   .tab-btn {
     background: none;
     border: none;
-    color: #94a3b8;
+    color: var(--color-on-surface);
+    opacity: 0.6;
     font-family: var(--font-display);
     font-size: 1.25rem;
     font-weight: 400;
@@ -109,11 +111,13 @@ const videoLabel = blok.video_tab_label || "Videos"
   }
 
   .tab-btn:hover {
-    color: #ffffff;
+    opacity: 1;
+    color: var(--color-on-surface);
   }
 
   .tab-btn.active {
-    color: #ffffff;
+    opacity: 1;
+    color: var(--color-on-surface);
   }
 
   .underline {

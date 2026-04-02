@@ -5,13 +5,20 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 const { blok } = Astro.props
 ---
 
-<div {...storyblokEditable(blok)} class="agency-card">
-  <h3 class="agency-title">{blok.title}</h3>
+<div {...storyblokEditable(blok)} class="agency-card reveal reveal-up">
+  <div class="card-header">
+    <h3 class="agency-title">{blok.title}</h3>
+    <div class="accent-line"></div>
+  </div>
   
-  <ul class="contact-list">
+  <ul class="contact-list stagger-container">
     {
-      blok.details?.map((nestedBlok: any) => {
-        return <StoryblokComponent blok={nestedBlok} />
+      blok.details?.map((nestedBlok: any, index: number) => {
+        return (
+          <div class="reveal reveal-up" style={`--stagger-index: ${index + 1};`}>
+            <StoryblokComponent blok={nestedBlok} />
+          </div>
+        )
       })
     }
   </ul>
@@ -19,26 +26,51 @@ const { blok } = Astro.props
 
 <style>
   .agency-card {
-    background-color: var(--color-surface-low); /* Dark gray background */
-    border-radius: 8px;
+    background-color: var(--color-surface-low);
+    border-radius: 2.5rem;
     padding: 4rem;
     width: 100%;
     max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Subtle border matching the design aesthetic */
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-outline-variant);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+  }
+
+  .agency-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+    background-color: var(--color-surface-high);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.5rem;
   }
 
   .agency-title {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--color-primary);
-    margin-bottom: 2.5rem;
-    text-align: center;
-    letter-spacing: 0.05em;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--color-primary); /* Use primary color for better visibility and branding */
+    margin: 0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .accent-line {
+    width: 40px;
+    height: 1px;
+    background-color: var(--color-primary);
+    margin-top: 1rem;
+    opacity: 0.6;
   }
 
   .contact-list {
@@ -49,13 +81,27 @@ const { blok } = Astro.props
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
-    /* Max width to contain items and left-align them as a block inside centered component */
     max-width: 320px; 
+  }
+
+  /* Deep target ContactItem styles for better integration */
+  .agency-card :global(.contact-item) {
+    transition: transform 0.3s ease;
+  }
+  .agency-card :global(.contact-item:hover) {
+    transform: translateX(8px);
+  }
+  .agency-card :global(.contact-text) {
+    font-size: 1.1rem !important;
   }
 
   @media (max-width: 640px) {
     .agency-card {
-      padding: 3rem 2rem;
+      padding: 3rem 1.5rem;
+      border-radius: 2rem;
+    }
+    .agency-title {
+        font-size: 1.25rem;
     }
   }
 </style>

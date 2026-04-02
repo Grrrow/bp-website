@@ -59,8 +59,8 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     grid-template-columns: 160px 1fr 180px; /* More balanced columns */
     align-items: center;
     padding: 3.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: background-color 0.3s ease;
+    border-bottom: 1px solid var(--color-outline-variant);
+    transition: background-color 0.3s ease, border-color 0.4s ease;
     gap: 2rem;
   }
 
@@ -78,7 +78,7 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     font-family: var(--font-body);
     font-size: 2.5rem;
     font-weight: 300;
-    color: #ffffff;
+    color: var(--color-on-surface);
     line-height: 1;
   }
 
@@ -87,7 +87,7 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: #94a3b8;
+    color: var(--color-primary);
     font-weight: 500;
   }
 
@@ -101,7 +101,7 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     font-family: var(--font-body);
     font-size: 1.35rem;
     font-weight: 400;
-    color: #ffffff;
+    color: var(--color-on-surface);
     margin: 0;
   }
 
@@ -109,7 +109,8 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #94a3b8;
+    color: var(--color-on-surface);
+    opacity: 0.7;
     font-family: var(--font-body);
     font-size: 0.9375rem;
     font-weight: 300;
@@ -123,8 +124,8 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
 
   /* Custom Button Styling for Calendar */
   .btn-mint-wrapper :global(.btn) {
-    background: linear-gradient(135deg, #79e5a1 0%, #a5f3bc 100%);
-    color: #0c0c0c !important;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-container));
+    color: var(--color-on-primary) !important;
     border: none !important;
     border-radius: 100px !important;
     padding: 1rem 2.5rem !important;
@@ -132,7 +133,7 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
     font-size: 0.75rem !important;
     text-transform: uppercase !important;
     letter-spacing: 0.15em !important;
-    box-shadow: 0 4px 15px rgba(121, 229, 161, 0.2);
+    box-shadow: 0 4px 15px rgba(45, 69, 63, 0.2);
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     min-width: 160px;
   }
@@ -140,14 +141,15 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
   .finished-label {
     display: inline-flex;
     padding: 0.5rem 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--color-outline-variant);
     border-radius: 100px;
     font-family: var(--font-body);
     font-size: 0.625rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #94a3b8;
+    color: var(--color-on-surface);
+    opacity: 0.6;
     justify-content: center;
     width: fit-content;
   }
@@ -159,12 +161,12 @@ const hasTickets = !isPast && blok.tickets_button && blok.tickets_button.length 
 
   .event-item-past .event-title {
     font-size: 1.5rem;
-    color: #d1d5db;
+    color: var(--color-on-surface);
   }
 
   .archive-date {
     font-size: 0.825rem;
-    color: #64748b;
+    color: var(--color-primary);
   }
 
   @media (max-width: 1024px) {

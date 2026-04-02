@@ -27,7 +27,8 @@ const { blok } = Astro.props
     font-family: var(--font-body);
     font-size: 2.25rem;
     font-weight: 700;
-    color: #334155; /* Darker silver/gray for the year */
+    color: var(--color-primary);
+    opacity: 0.4;
     line-height: 1;
     text-align: right;
   }
@@ -42,7 +43,7 @@ const { blok } = Astro.props
     font-family: var(--font-body);
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--color-on-surface);
     margin: 0;
   }
 
@@ -50,7 +51,8 @@ const { blok } = Astro.props
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.6;
-    color: #94a3b8;
+    color: var(--color-on-surface);
+    opacity: 0.7;
     margin: 0;
   }
 

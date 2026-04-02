@@ -1,58 +1,80 @@
 ---
-import '../styles/global.css';
-import { useStoryblokApi } from '@storyblok/astro';
-import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import LanguagePicker from '../components/LanguagePicker.astro';
-import { useTranslations } from '../i18n/utils';
-import { ClientRouter } from 'astro:transitions';
+import "../styles/global.css";
+import { useStoryblokApi } from "@storyblok/astro";
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+import LanguagePicker from "../components/LanguagePicker.astro";
+import { useTranslations } from "../i18n/utils";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
 	title: string;
-	lang: 'es' | 'en';
+	lang: "es" | "en";
 	description?: string;
 	image?: string; // SEO image from Storyblok, no default fallback
 }
 
-const { title, lang, description = "Soprano Berna Perles", image = "" } = Astro.props;
+const {
+	title,
+	lang,
+	description = "Soprano Berna Perles",
+	image = "",
+} = Astro.props;
 const t = useTranslations(lang);
 
 const storyblokApi = useStoryblokApi();
 let globalConfig = null;
 
 try {
-  const { data } = await storyblokApi.get(`cdn/stories/configuracion-general`, {
-    version: 'draft',
-    language: lang === 'es' ? 'default' : lang,
-  });
-  globalConfig = data.story;
+	const isPreview = import.meta.env.PUBLIC_IS_PREVIEW === 'true' || import.meta.env.DEV;
+	const { data } = await storyblokApi.get(
+		`cdn/stories/configuracion-general`,
+		{
+			version: isPreview ? "draft" : "published",
+			language: lang === "es" ? "default" : lang,
+		},
+	);
+	globalConfig = data.story;
 } catch (error) {
-  console.log("Layout: Error fetching global config. Please verify STORYBLOK_TOKEN.");
+	console.log(
+		"Layout: Error fetching global config. Please verify STORYBLOK_TOKEN.",
+	);
 }
-const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Astro.url.pathname === '/en/' || Astro.url.pathname === '/home' || Astro.url.pathname === '/en/home';
+const isHome =
+	Astro.url.pathname === "/" ||
+	Astro.url.pathname === "/en" ||
+	Astro.url.pathname === "/en/" ||
+	Astro.url.pathname === "/home" ||
+	Astro.url.pathname === "/en/home";
 
 // SEO URL Logic
-const siteUrl = 'https://bernaperles.com';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString().replace(/\/$/, '');
+const siteUrl = "https://bernaperles.com";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl)
+	.toString()
+	.replace(/\/$/, "");
 
-const isEn = lang === 'en';
-const esPath = isEn ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname;
-const enPath = isEn ? Astro.url.pathname : `/en${Astro.url.pathname === '/' ? '' : Astro.url.pathname}`;
+const isEn = lang === "en";
+const esPath = isEn
+	? Astro.url.pathname.replace(/^\/en/, "") || "/"
+	: Astro.url.pathname;
+const enPath = isEn
+	? Astro.url.pathname
+	: `/en${Astro.url.pathname === "/" ? "" : Astro.url.pathname}`;
 
-const esUrl = new URL(esPath, siteUrl).toString().replace(/\/$/, '');
-const enUrl = new URL(enPath, siteUrl).toString().replace(/\/$/, '');
+const esUrl = new URL(esPath, siteUrl).toString().replace(/\/$/, "");
+const enUrl = new URL(enPath, siteUrl).toString().replace(/\/$/, "");
 
 // Structured Data
 const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Berna Perles",
-  "url": siteUrl,
-  "jobTitle": "Soprano",
-  "description": "Soprano malagueña de trayectoria internacional.",
-  "sameAs": [
-    "https://www.instagram.com/bernaperles_soprano/",
-    "https://www.facebook.com/berna.perles"
-  ]
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: "Berna Perles",
+	url: siteUrl,
+	jobTitle: "Soprano",
+	description: "Soprano malagueña de trayectoria internacional.",
+	sameAs: [
+		"https://www.instagram.com/bernaperles_soprano/",
+		"https://www.facebook.com/berna.perles",
+	],
 };
 ---
 
@@ -63,135 +85,202 @@ const personSchema = {
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/x-icon" href="/favico.ico" />
-    <link rel="shortcut icon" href="/favico.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <ClientRouter />
+		<link rel="shortcut icon" href="/favico.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<ClientRouter />
 
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="es" href={esUrl} />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="x-default" href={esUrl} />
+		<script is:inline>
+			const getTheme = () => {
+				if (
+					typeof localStorage !== "undefined" &&
+					localStorage.getItem("theme")
+				) {
+					return localStorage.getItem("theme");
+				}
+				return window.matchMedia("(prefers-color-scheme: dark)").matches
+					? "dark"
+					: "light";
+			};
+			const theme = getTheme();
+			if (theme === "light") {
+				document.documentElement.setAttribute("data-theme", "light");
+			} else {
+				document.documentElement.removeAttribute("data-theme");
+			}
+		</script>
 
-    <!-- Performance Hints -->
-    <link rel="preconnect" href="https://a.storyblok.com">
-    <link rel="dns-prefetch" href="https://a.storyblok.com">
-    
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} defer />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="es" href={esUrl} />
+		<link rel="alternate" hreflang="en" href={enUrl} />
+		<link rel="alternate" hreflang="x-default" href={esUrl} />
 
-    <!-- Google Fonts Preconnect & Link -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    </noscript>
-    
-    {image && (
-      <link 
-        rel="preload" 
-        as="image" 
-        href={`${image}/m/1200x630/filters:format(webp):quality(80)`} 
-        fetchpriority="high" 
-      />
-    )}
-		
+		<!-- Performance Hints -->
+		<link rel="preconnect" href="https://a.storyblok.com" />
+		<link rel="dns-prefetch" href="https://a.storyblok.com" />
+
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(personSchema)}
+			defer
+		/>
+
+		<!-- Google Fonts Preconnect & Link -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap"
+			rel="stylesheet"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<noscript>
+			<link
+				href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap"
+				rel="stylesheet"
+			/>
+		</noscript>
+
+		{
+			image && (
+				<link
+					rel="preload"
+					as="image"
+					href={`${image}/m/1200x630/filters:format(webp):quality(80)`}
+					fetchpriority="high"
+				/>
+			)
+		}
+
 		<!-- SEO & Open Graph Tags -->
 		<title>{title}</title>
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
-		{image && <meta property="og:image" content={`${image}/m/1200x630/filters:format(webp):quality(80)`} />}
+		{
+			image && (
+				<meta
+					property="og:image"
+					content={`${image}/m/1200x630/filters:format(webp):quality(80)`}
+				/>
+			)
+		}
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		{image && <meta name="twitter:image" content={`${image}/m/1200x630/filters:format(webp):quality(80)`} />}
+		{
+			image && (
+				<meta
+					name="twitter:image"
+					content={`${image}/m/1200x630/filters:format(webp):quality(80)`}
+				/>
+			)
+		}
 	</head>
 	<body>
-    {globalConfig ? (
-      <>
-        {globalConfig.content.header?.map((headerBlok: any) => (
-          <StoryblokComponent blok={headerBlok} />
-        ))}
-        
-        <main class:list={{ 'pt-header': !isHome }} transition:animate="fade">
-          <slot />
-        </main>
+		{
+			globalConfig ? (
+				<>
+					{globalConfig.content.header?.map((headerBlok: any) => (
+						<StoryblokComponent blok={headerBlok} />
+					))}
 
-        {globalConfig.content.footer?.map((footerBlok: any) => (
-          <StoryblokComponent blok={footerBlok} />
-        ))}
-      </>
-    ) : (
-      <>
-        <header class="fallback-header glass">
-          <div class="actions">
-            <a href={lang === 'es' ? '/' : '/en'} class="logo">Berna Perles</a>
-            <LanguagePicker />
-          </div>
-        </header>
-        <main class:list={{ 'pt-header': !isHome }} transition:animate="fade">
-          <slot />
-        </main>
-      </>
-    )}
-	</body>
-  
-  <script is:inline>
-    // Reveal Observer Logic - Inlined for performance
-    const initReveal = () => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
+					<main
+						class:list={{ "pt-header": !isHome }}
+						transition:animate="fade"
+					>
+						<slot />
+					</main>
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
+					{globalConfig.content.footer?.map((footerBlok: any) => (
+						<StoryblokComponent blok={footerBlok} />
+					))}
+				</>
+			) : (
+				<>
+					<header class="fallback-header glass">
+						<div class="actions">
+							<a href={lang === "es" ? "/" : "/en"} class="logo">
+								Berna Perles
+							</a>
+							<LanguagePicker />
+						</div>
+					</header>
+					<main
+						class:list={{ "pt-header": !isHome }}
+						transition:animate="fade"
+					>
+						<slot />
+					</main>
+				</>
+			)
+		}
+	<script is:inline>
+		// Reveal Observer Logic - Inlined for performance
+		const initReveal = () => {
+			const observerOptions = {
+				threshold: 0.1,
+				rootMargin: "0px 0px -50px 0px",
+			};
 
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    };
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("active");
+						observer.unobserve(entry.target);
+					}
+				});
+			}, observerOptions);
 
-    initReveal();
-    document.addEventListener('astro:after-swap', initReveal);
-  </script>
+			document
+				.querySelectorAll(".reveal")
+				.forEach((el) => observer.observe(el));
+		};
+
+		initReveal();
+		document.addEventListener("astro:after-swap", initReveal);
+
+    // Storyblok Bridge Live Reloading (Optional enhancement)
+    if (window.location.search.includes('_storyblok') || window.location.href.includes('_storyblok')) {
+      document.addEventListener('storyblok:input', () => {
+        // This will trigger a re-render/refetch if needed, 
+        // though Astro usually needs a full refresh for draft changes.
+        location.reload();
+      });
+    }
+	</script>
 </html>
 
 <style>
-  .fallback-header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 1rem 2rem;
-    gap: 1rem;
-    border-bottom: 1px solid var(--color-surface-high);
-  }
-  .actions {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .logo {
-    font-weight: bold;
-    font-size: 1.25rem;
-    font-family: var(--font-display);
-    letter-spacing: 0.1em;
-    color: var(--color-on-surface);
-    text-decoration: none;
-  }
-  main {
-    /* No max-width here so hero sections can be full width. 
+	.fallback-header {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 1rem 2rem;
+		gap: 1rem;
+		border-bottom: 1px solid var(--color-surface-high);
+	}
+	.actions {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	.logo {
+		font-weight: bold;
+		font-size: 1.25rem;
+		font-family: var(--font-display);
+		letter-spacing: 0.1em;
+		color: var(--color-on-surface);
+		text-decoration: none;
+	}
+	main {
+		/* No max-width here so hero sections can be full width. 
        Components should handle their own internal container padding/max-width. */
-    width: 100%;
-  }
-  .pt-header {
-    padding-top: 80px; /* Spacer for the absolute header on non-hero pages */
-  }
+		width: 100%;
+	}
+	.pt-header {
+		padding-top: 80px; /* Spacer for the absolute header on non-hero pages */
+	}
 </style>

@@ -2,15 +2,19 @@
 import { storyblokEditable } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import LanguagePicker from '../components/LanguagePicker.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { getLangFromUrl } from '../i18n/utils';
 
 const { blok } = Astro.props
 
 const lang = getLangFromUrl(Astro.url);
 const homeUrl = lang === 'es' ? '/' : '/en';
+
+// Detect if we are on the home page for special transparent header contrast
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Astro.url.pathname === '/en/';
 ---
 
-<header {...storyblokEditable(blok)} class="global-header">
+<header {...storyblokEditable(blok)} class:list={["global-header", { "home-header": isHome }]}>
   <nav class="nav-container">
     <a href={homeUrl} class="logo">
       {blok.logo && blok.logo.filename ? (
@@ -42,7 +46,10 @@ const homeUrl = lang === 'es' ? '/' : '/en';
             )
           })
         }
-        <div class="nav-item-animate lang-picker-wrapper" style={`--animation-order: ${blok.nav_links?.length ? blok.nav_links.length + 1 : 1};`}>
+        <div class="nav-item-animate theme-toggle-wrapper" style={`--animation-order: ${blok.nav_links?.length ? blok.nav_links.length + 1 : 1};`}>
+          <ThemeToggle />
+        </div>
+        <div class="nav-item-animate lang-picker-wrapper" style={`--animation-order: ${blok.nav_links?.length ? blok.nav_links.length + 2 : 2};`}>
           <LanguagePicker />
         </div>
       </div>
@@ -60,26 +67,46 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     padding: 1.5rem 2rem;
     background-color: transparent; /* Top of page is transparent */
     transition: background-color 0.4s ease, padding 0.4s ease, border-color 0.4s ease;
-    border-bottom: 1px solid transparent; /* Prepare for border on scroll */
+    border-bottom: 1px solid transparent;
+    --header-text-color: var(--color-on-surface);
+  }
+
+  /* Force white text in Dark Mode by default for transparent state */
+  :global([data-theme="dark"]) .global-header:not(.scrolled) {
+    --header-text-color: #ffffff;
+  }
+
+  /* Force white text on Home Page Hero even in Light Mode (since background is dark) */
+  .global-header.home-header:not(.scrolled) {
+    --header-text-color: #ffffff;
+  }
+
+  .global-header :global(.nav-item),
+  .global-header :global(.theme-toggle),
+  .global-header :global(.language-picker) {
+    color: var(--header-text-color) !important;
   }
 
   /* Scrolled State */
   .global-header.scrolled {
-    background-color: rgba(18, 18, 18, 0.95);
+    background-color: var(--color-surface);
+    opacity: 0.98;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: 1rem 2rem; /* Condense slightly to give back screen estate */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle separation */
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--color-outline-variant);
+    --header-text-color: var(--color-on-surface);
   }
   
   .global-header.menu-open {
     position: fixed; /* Lock to viewport perfectly when open */
-    background-color: rgba(18, 18, 18, 0.95); /* Deep dark background */
+    background-color: var(--color-surface);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     height: 100vh;
     padding-bottom: 2rem;
     overflow-y: auto;
+    --header-text-color: var(--color-on-surface);
   }
 
   .nav-container {
@@ -107,7 +134,8 @@ const homeUrl = lang === 'es' ? '/' : '/en';
   .logo-text {
     font-size: 1.5rem;
     font-family: var(--font-display);
-    color: var(--color-on-surface);
+    color: var(--header-text-color);
+    transition: color 0.4s ease;
   }
   .logo-text strong {
     font-weight: 700;
@@ -129,6 +157,11 @@ const homeUrl = lang === 'es' ? '/' : '/en';
   }
   .lang-picker-wrapper {
     display: flex;
+    align-items: center;
+  }
+  .theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
   }
 
   /* Hamburger Button (Hidden on Desktop) */
@@ -158,7 +191,7 @@ const homeUrl = lang === 'es' ? '/' : '/en';
   .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
     width: 30px;
     height: 2px;
-    background-color: #ffffff;
+    background-color: var(--color-on-surface);
     border-radius: 4px;
     position: absolute;
     transition-property: transform, opacity, background-color;
@@ -233,12 +266,13 @@ const homeUrl = lang === 'es' ? '/' : '/en';
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      background-color: rgba(18, 18, 18, 0.98); /* Fallback for browsers without backdrop-filter */
+      background-color: var(--color-surface);
     }
     
     @supports (backdrop-filter: blur(15px)) {
       .global-header.menu-open .header-items-wrapper {
-        background-color: rgba(18, 18, 18, 0.85);
+        background-color: var(--color-surface);
+        opacity: 0.98;
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
       }
@@ -271,7 +305,7 @@ const homeUrl = lang === 'es' ? '/' : '/en';
       font-weight: 300 !important;
       text-transform: none !important;
       letter-spacing: 0.05em !important;
-      color: #ffffff !important;
+      color: var(--color-on-surface) !important;
     }
     
     .global-header.menu-open :global(.nav-link.active) {
@@ -281,6 +315,9 @@ const homeUrl = lang === 'es' ? '/' : '/en';
     /* Scale language picker significantly */
     .global-header.menu-open :global(.language-picker form) {
       transform: scale(1.3);
+      margin-top: 1rem;
+    }
+    .theme-toggle-wrapper {
       margin-top: 2rem;
     }
   }

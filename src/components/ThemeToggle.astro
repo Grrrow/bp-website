@@ -1,0 +1,124 @@
+---
+/**
+ * ThemeToggle.astro
+ * Botón minimalista para alternar entre modo claro y oscuro.
+ * Implementa persistencia con localStorage y soporte para View Transitions.
+ */
+---
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+  <!-- Sun Icon -->
+  <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+  
+  <!-- Moon Icon -->
+  <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<script is:inline>
+  function initThemeToggle() {
+    const toggle = document.querySelector('#theme-toggle');
+    if (!toggle) return;
+
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    // Set initial state
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+
+    window.localStorage.setItem('theme', theme);
+
+    const handleToggleClick = () => {
+      const element = document.documentElement;
+      const isDark = !element.hasAttribute('data-theme');
+      
+      if (isDark) {
+        element.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        element.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'dark');
+      }
+    };
+
+    toggle.onclick = handleToggleClick;
+  }
+
+  // Initial load
+  initThemeToggle();
+  // Support for View Transitions
+  document.addEventListener('astro:after-swap', initThemeToggle);
+</script>
+
+<style>
+  .theme-toggle {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--color-on-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  :root[data-theme="light"] .theme-toggle {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: scale(1.1);
+  }
+
+  :root[data-theme="light"] .theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .sun-icon, .moon-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mostrar/Ocultar iconos según el tema */
+  .sun-icon { display: none; }
+  .moon-icon { display: block; }
+
+  :root[data-theme="light"] .sun-icon { display: block; }
+  :root[data-theme="light"] .moon-icon { display: none; }
+
+  @media (max-width: 1024px) {
+    .theme-toggle {
+        padding: 0.75rem;
+    }
+    .sun-icon, .moon-icon {
+        width: 24px;
+        height: 24px;
+    }
+  }
+</style>

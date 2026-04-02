@@ -35,6 +35,23 @@
   --radius-md: 1rem;
 }
 
+:root[data-theme="light"] {
+  --color-surface: #ffffff;
+  --color-surface-low: #f8fafc;
+  --color-surface-high: #f1f5f9;
+  
+  --color-primary: #2d453f; /* Darker mint for better white text contrast */
+  --color-primary-container: #5a7d74; /* Darker container for primary gradient */
+  --color-secondary: #334155;
+  --color-tertiary: #1e293b;
+  --color-neutral: #f1f5f9;
+  
+  --color-on-surface: #0f172a;
+  --color-on-primary: #ffffff;
+  
+  --color-outline-variant: rgba(15, 23, 42, 0.1);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -45,6 +62,12 @@ html {
   color: var(--color-on-surface);
   letter-spacing: 0.02em;
   overflow-x: hidden;
+  text-align: justify;
+}
+
+p {
+  text-align: justify;
+  hyphens: auto;
 }
 
 body {

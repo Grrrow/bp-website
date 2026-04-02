@@ -65,7 +65,8 @@ const pastEvents = allEvents
 <style>
   .actuaciones-list-section {
     padding: 6rem 0 10rem 0;
-    background-color: #000000;
+    background-color: var(--color-surface);
+    transition: background-color 0.4s ease;
   }
 
   .container {
@@ -80,14 +81,14 @@ const pastEvents = allEvents
     align-items: flex-end;
     margin-bottom: 6rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--color-outline-variant);
   }
 
   .list-title {
     font-family: var(--font-body);
     font-size: 2.5rem;
     font-weight: 500;
-    color: #ffffff;
+    color: var(--color-on-surface);
     margin: 0;
   }
 
@@ -96,7 +97,7 @@ const pastEvents = allEvents
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    color: #94a3b8;
+    color: var(--color-primary);
     font-weight: 500;
   }
 

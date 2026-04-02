@@ -22,8 +22,9 @@ const { blok } = Astro.props
 <style>
   .featured-roles-section {
     padding: 8rem 0;
-    background-color: #0c0c0c; /* Matching the deep black theme */
+    background-color: var(--color-surface);
     color: var(--color-on-surface);
+    transition: background-color 0.4s ease;
   }
 
   .container {
@@ -38,7 +39,7 @@ const { blok } = Astro.props
     font-weight: 300;
     text-align: center;
     margin-bottom: 5rem;
-    color: #ffffff;
+    color: var(--color-on-surface);
   }
 
   .roles-grid {

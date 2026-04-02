@@ -21,7 +21,8 @@ const isContactPage = blok.component === 'page' && (Astro.url.pathname.includes(
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #000000;
+    background-color: var(--color-surface);
+    transition: background-color 0.4s ease;
   }
 
   @media (min-width: 1024px) {
