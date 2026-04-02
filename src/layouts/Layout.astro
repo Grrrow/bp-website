@@ -26,10 +26,19 @@ let globalConfig = null;
 
 try {
 	const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
+	const requestedVersion = isPreview ? 'draft' : 'published';
+
+	console.log('--- ENTORNO STORYBLOK (Layout.astro) ---');
+	console.log('process.env.STORYBLOK_IS_PREVIEW:', process.env.STORYBLOK_IS_PREVIEW);
+	console.log('import.meta.env.DEV:', import.meta.env.DEV);
+	console.log('process.env.VERCEL_ENV:', process.env.VERCEL_ENV);
+	console.log('Variables evaluadas -> isPreview:', isPreview);
+	console.log('Versión solicitada a Storyblok:', requestedVersion);
+	console.log('------------------------------------------');
 	const { data } = await storyblokApi.get(
 		`cdn/stories/configuracion-general`,
 		{
-			version: isPreview ? "draft" : "published",
+			version: requestedVersion,
 			language: lang === "es" ? "default" : lang,
 		},
 	);
