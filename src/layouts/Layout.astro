@@ -184,6 +184,9 @@ const personSchema = {
 				/>
 			)
 		}
+		
+		<!-- FORZAR SCRIPT DEL BRIDGE DE STORYBLOK -->
+		<script src="https://app.storyblok.com/f/storyblok-v2-latest.js" is:inline></script>
 	</head>
 	<body>
 		{
@@ -250,12 +253,20 @@ const personSchema = {
 
     // Storyblok Bridge Live Reloading (Optional enhancement)
     if (window.location.search.includes('_storyblok') || window.location.href.includes('_storyblok')) {
-      document.addEventListener('storyblok:input', () => {
-        // This will trigger a re-render/refetch if needed, 
-        // though Astro usually needs a full refresh for draft changes.
-        location.reload();
-      });
+		if (window.StoryblokBridge) {
+			const storyblokInstance = new window.StoryblokBridge();
+			storyblokInstance.on(['published', 'change'], () => {
+				location.reload(true);
+			});
+		}
     }
+	</script>
+
+	<!-- DEBUGGING ÚNICAMENTE: BORRAR EN PRODUCCIÓN -->
+	<script is:inline define:vars={{ token: process.env.STORYBLOK_TOKEN }}>
+		console.log("==========================================");
+		console.log("🔑 STORYBLOK TOKEN (Servidor a Cliente):", token);
+		console.log("==========================================");
 	</script>
 </html>
 
