@@ -25,9 +25,11 @@ const storyblokApi = useStoryblokApi();
 let globalConfig = null;
 
 try {
-	const isPreview = process.env.STORYBLOK_IS_PREVIEW === 'true' || import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
-	const requestedVersion = isPreview ? 'draft' : 'published';
-
+	const isPreview =
+		process.env.STORYBLOK_IS_PREVIEW === "true" ||
+		import.meta.env.DEV ||
+		process.env.VERCEL_ENV === "preview";
+	const requestedVersion = isPreview ? "draft" : "published";
 
 	const { data } = await storyblokApi.get(
 		`cdn/stories/configuracion-general`,
@@ -217,57 +219,68 @@ const personSchema = {
 				</>
 			)
 		}
-	<script is:inline>
-		// Reveal Observer Logic - Inlined for performance
-		const initReveal = () => {
-			const observerOptions = {
-				threshold: 0.1,
-				rootMargin: "0px 0px -50px 0px",
+		<script is:inline>
+			// Reveal Observer Logic - Inlined for performance
+			const initReveal = () => {
+				const observerOptions = {
+					threshold: 0.1,
+					rootMargin: "0px 0px -50px 0px",
+				};
+
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("active");
+							observer.unobserve(entry.target);
+						}
+					});
+				}, observerOptions);
+
+				document
+					.querySelectorAll(".reveal")
+					.forEach((el) => observer.observe(el));
 			};
 
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add("active");
-						observer.unobserve(entry.target);
+			initReveal();
+			document.addEventListener("astro:after-swap", initReveal);
+
+			// Storyblok Bridge Live Reloading & Editing Injection
+			if (
+				window.location.search.includes("_storyblok") ||
+				window.location.href.includes("_storyblok")
+			) {
+				const script = document.createElement("script");
+				script.src =
+					"https://app.storyblok.com/f/storyblok-v2-latest.js";
+				script.type = "text/javascript";
+				script.onload = function () {
+					if (window.StoryblokBridge) {
+						const storyblokInstance = new window.StoryblokBridge();
+						storyblokInstance.on(["published", "change"], () => {
+							location.reload(true);
+						});
+
+						// Para componentes puramente .astro (HTML sin JS Reactivo),
+						// simulamos el Live Preview recargando la página cuando el usuario pausa de teclear.
+						let typingTimer;
+						storyblokInstance.on("input", (event) => {
+							clearTimeout(typingTimer);
+							typingTimer = setTimeout(() => {
+								location.reload(true);
+							}, 400); // 400ms de retraso para no saturar al escribir
+						});
 					}
-				});
-			}, observerOptions);
+				};
+				document.head.appendChild(script);
 
-			document
-				.querySelectorAll(".reveal")
-				.forEach((el) => observer.observe(el));
-		};
-
-		initReveal();
-		document.addEventListener("astro:after-swap", initReveal);
-
-    // Storyblok Bridge Live Reloading & Editing Injection
-    if (window.location.search.includes('_storyblok') || window.location.href.includes('_storyblok')) {
-		const script = document.createElement('script');
-		script.src = "https://app.storyblok.com/f/storyblok-v2-latest.js";
-		script.type = "text/javascript";
-		script.onload = function() {
-			if (window.StoryblokBridge) {
-				const storyblokInstance = new window.StoryblokBridge();
-				storyblokInstance.on(['published', 'change'], () => {
-					location.reload(true);
-				});
-
-				// Para componentes puramente .astro (HTML sin JS Reactivo), 
-				// simulamos el Live Preview recargando la página cuando el usuario pausa de teclear.
-				let typingTimer;
-				storyblokInstance.on('input', (event) => {
-					clearTimeout(typingTimer);
-					typingTimer = setTimeout(() => {
-						location.reload(true);
-					}, 400); // 400ms de retraso para no saturar al escribir
-				});
+				// Disable reveal animations inside the editor so all elements are immediately visible and clickable
+				const style = document.createElement("style");
+				style.innerHTML =
+					".reveal { opacity: 1 !important; transform: none !important; pointer-events: auto !important; transition: none !important; }";
+				document.head.appendChild(style);
 			}
-		};
-		document.head.appendChild(script);
-    }
-	</script>
+		</script>
+	</body>
 </html>
 
 <style>

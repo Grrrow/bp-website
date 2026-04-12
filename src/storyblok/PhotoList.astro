@@ -1,0 +1,40 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+
+// The photo list contains multiple photo_section components
+const sections = blok.sections || blok.items || blok.photos_sections || blok.photo_sections || blok.photos_items || []
+---
+
+<div {...storyblokEditable(blok)} class="photo-list-container">
+  {sections.map((subblok: any) => (
+    <StoryblokComponent blok={subblok} />
+  ))}
+</div>
+
+<style>
+  .photo-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem; /* Generous gap between different photo sections */
+    width: 100%;
+    min-height: 100px; /* Ensures the container is clickable in Storyblok even if empty */
+  }
+  
+  .photo-list-container:empty {
+    padding: 2rem;
+    border: 2px dashed rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .photo-list-container:empty::before {
+    content: "Añadir Photo Section aquí...";
+    color: rgba(255,255,255,0.5);
+    font-size: 0.9rem;
+    font-family: monospace;
+  }
+</style>

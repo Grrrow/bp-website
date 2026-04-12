@@ -58,6 +58,8 @@ export default defineConfig({
         contact_portrait_card: 'storyblok/ContactPortraitCard',
         contact_social_bar: 'storyblok/ContactSocialBar',
         contact_footer_text: 'storyblok/ContactFooterText',
+        photos_section: 'storyblok/PhotosSection',
+        photo_list: 'storyblok/PhotoList'
       },
     })
   ],
