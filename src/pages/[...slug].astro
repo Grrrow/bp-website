@@ -22,7 +22,7 @@ let story = null;
 try {
   const { data } = await storyblokApi.get(`cdn/stories/${targetSlug}`, {
     version: requestedVersion,
-    language: lang === 'es' ? 'es' : lang,
+    language: lang === 'es' ? 'default' : lang,
   });
   story = data.story;
 } catch (error: any) {

@@ -30,12 +30,18 @@ try {
 		import.meta.env.DEV ||
 		process.env.VERCEL_ENV === "preview";
 	const requestedVersion = isPreview ? "draft" : "published";
+    
+    // Check if we are inside Storyblok visual editor and the editor is forcing a language
+    const storyblokLangQuery = Astro.url.searchParams.get('_storyblok_lang');
+    const finalLang = storyblokLangQuery && storyblokLangQuery !== 'default' 
+        ? storyblokLangQuery 
+        : (lang === "es" ? "default" : lang);
 
 	const { data } = await storyblokApi.get(
 		`cdn/stories/configuracion-general`,
 		{
 			version: requestedVersion,
-			language: lang === "es" ? "default" : lang,
+			language: finalLang,
 		},
 	);
 	globalConfig = data.story;
