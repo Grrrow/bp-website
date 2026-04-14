@@ -35,12 +35,8 @@
       if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
         return localStorage.getItem('theme');
       }
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
       return 'light';
     })();
-
     // Set initial state
     if (theme === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
