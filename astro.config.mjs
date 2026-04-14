@@ -59,7 +59,10 @@ export default defineConfig({
         contact_social_bar: 'storyblok/ContactSocialBar',
         contact_footer_text: 'storyblok/ContactFooterText',
         photos_section: 'storyblok/PhotosSection',
-        photo_list: 'storyblok/PhotoList'
+        photo_list: 'storyblok/PhotoList',
+        repertoire_section: 'storyblok/RepertoireSection',
+        repertoire_composer_group: 'storyblok/RepertoireComposerGroup',
+        repertoire_role_item: 'storyblok/RepertoireRoleItem'
       },
     })
   ],

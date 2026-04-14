@@ -24,7 +24,12 @@ try {
     version: requestedVersion,
     language: lang === 'es' ? 'default' : lang,
   });
+  
   story = data.story;
+  
+  if (targetSlug === 'biografia') {
+    console.log("BIOGRAFIA BLOK DATA:\n", JSON.stringify(story.content, null, 2));
+  }
 } catch (error: any) {
   console.log("Error fetching story:", error.message || error);
 }

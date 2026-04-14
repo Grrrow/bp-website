@@ -1,0 +1,251 @@
+
+> bernaperles@0.0.1 build
+> astro build
+
+09:19:30 [vite] Re-optimizing dependencies because vite config has changed
+09:19:30 [content] Syncing content
+09:19:30 [content] Synced content
+09:19:30 [types] Generated 75ms
+09:19:30 [build] output: "static"
+09:19:30 [build] mode: "static"
+09:19:30 [build] directory: /Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/
+09:19:30 [build] adapter: @astrojs/vercel
+09:19:30 [build] Collecting build info...
+09:19:30 [build] ✓ Completed in 89ms.
+09:19:30 [build] Building static entrypoints...
+09:19:32 [vite] ✓ built in 1.19s
+09:19:32 [build] ✓ Completed in 1.21s.
+
+ building client (vite) 
+09:19:32 [vite] transforming...
+09:19:32 [vite] ✓ 16 modules transformed.
+09:19:32 [vite] rendering chunks...
+09:19:32 [vite] computing gzip size...
+09:19:32 [vite] dist/_astro/index.B4l80GFz.js                                                2.30 kB │ gzip:   1.04 kB
+09:19:32 [vite] dist/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CQFiFTFJ.js   13.11 kB │ gzip:   4.54 kB
+09:19:32 [vite] dist/_astro/page.zS3XR9NK.js                                               788.99 kB │ gzip: 161.49 kB
+09:19:32 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+09:19:32 [vite] ✓ built in 612ms
+
+ generating static routes 
+09:19:32 ▶ src/pages/en/[...slug].astro
+09:19:33   ├─ /en/contacto/index.html (+247ms) 
+09:19:33   ├─ /en/actuaciones/index.html (+192ms) 
+09:19:33   ├─ /en/multimedia/index.htmlMULTIMEDIA GALLERY BLOK DATA:  {
+  "_uid": "9455ca4e-b574-454c-b9f2-1880a8112b6b",
+  "component": "multimedia_gallery_section",
+  "video_items": [
+    {
+      "_uid": "5bae8a5f-786a-496d-98c6-3151e3ee7e95",
+      "type": "video",
+      "width": "",
+      "caption": "Exemplo de descripción del video - Teatro de ejemplo",
+      "component": "gallery_item",
+      "video_url": {
+        "id": "",
+        "url": "https://www.youtube.com/watch?v=9VCI3G2t4_0",
+        "linktype": "url",
+        "fieldtype": "multilink",
+        "cached_url": "https://www.youtube.com/watch?v=9VCI3G2t4_0"
+      },
+      "media_file": {
+        "id": 157743410865573,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/725x400/3b60b9004d/bernaperles-manon.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    }
+  ],
+  "photos_items": [
+    {
+      "_uid": "a7670d3d-736e-4716-bf95-452f7b430001",
+      "tile": "Estudio",
+      "component": "photos_section",
+      "photos_list": [
+        {
+          "_uid": "c17124e9-f9d9-4669-a9b6-dc6f1a4b08a9",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591304479660,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/221c097943/berna-perles-gemma-escribano-17b.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        },
+        {
+          "_uid": "6ef2dd03-e143-4109-b1f2-f677f91825f5",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591305003951,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/269706c0af/berna-perles-gemma-escribano-13.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        }
+      ]
+    }
+  ],
+  "photo_tab_label": "Fotos",
+  "video_tab_label": "Videos"
+}
+ (+175ms) 
+09:19:33   ├─ /en/biografia/index.html (+161ms) 
+09:19:33   ├─ /en/configuracion-general/index.html (+83ms) 
+09:19:33   ├─ /en/index.html (+176ms) 
+09:19:34   └─ /en/home/index.html (+1ms) 
+09:19:34 ▶ src/pages/[...slug].astro
+09:19:34   ├─ /contacto/index.html (+402ms) 
+09:19:34   ├─ /actuaciones/index.html (+177ms) 
+09:19:34   ├─ /multimedia/index.htmlMULTIMEDIA GALLERY BLOK DATA:  {
+  "_uid": "9455ca4e-b574-454c-b9f2-1880a8112b6b",
+  "component": "multimedia_gallery_section",
+  "video_items": [
+    {
+      "_uid": "5bae8a5f-786a-496d-98c6-3151e3ee7e95",
+      "type": "video",
+      "width": "",
+      "caption": "Exemplo de descripción del video - Teatro de ejemplo",
+      "component": "gallery_item",
+      "video_url": {
+        "id": "",
+        "url": "https://www.youtube.com/watch?v=9VCI3G2t4_0",
+        "linktype": "url",
+        "fieldtype": "multilink",
+        "cached_url": "https://www.youtube.com/watch?v=9VCI3G2t4_0"
+      },
+      "media_file": {
+        "id": 157743410865573,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/725x400/3b60b9004d/bernaperles-manon.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    }
+  ],
+  "photos_items": [
+    {
+      "_uid": "a7670d3d-736e-4716-bf95-452f7b430001",
+      "tile": "Estudio",
+      "component": "photos_section",
+      "photos_list": [
+        {
+          "_uid": "c17124e9-f9d9-4669-a9b6-dc6f1a4b08a9",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591304479660,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/221c097943/berna-perles-gemma-escribano-17b.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        },
+        {
+          "_uid": "6ef2dd03-e143-4109-b1f2-f677f91825f5",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591305003951,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/269706c0af/berna-perles-gemma-escribano-13.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        }
+      ]
+    }
+  ],
+  "photo_tab_label": "Fotos",
+  "video_tab_label": "Videos"
+}
+ (+159ms) 
+09:19:34   ├─ /biografia/index.html (+466ms) 
+09:19:35   ├─ /index.html (+137ms) 
+09:19:35   └─ /home/index.html (+1ms) 
+09:19:35 ✓ Completed in 2.97s.
+
+09:19:35 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+09:19:35 [@astrojs/vercel] Copying static files to .vercel/output/static
+09:19:35 [build] 13 page(s) built in 4.92s
+09:19:35 [build] Complete!

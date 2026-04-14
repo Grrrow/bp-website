@@ -1,0 +1,62 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+
+const { blok } = Astro.props
+
+const composerName = blok.composer_name || '';
+const roles = blok.roles || blok.items || [];
+---
+
+<div {...storyblokEditable(blok)} class="repertoire-composer-group">
+  {composerName && <h4 class="composer-name">{composerName}</h4>}
+  
+  <div class="roles-list">
+    {roles.map((subblok: any) => (
+      <StoryblokComponent blok={subblok} />
+    ))}
+    {roles.length === 0 && (
+      <div class="empty-roles">
+        <span>Añade roles aquí...</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .repertoire-composer-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    break-inside: avoid; /* Previene cortes raros en grids o columnas */
+  }
+
+  .composer-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-on-surface);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .roles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .empty-roles {
+    min-height: 50px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: monospace;
+    font-size: 0.85rem;
+  }
+</style>

@@ -1,0 +1,409 @@
+
+> bernaperles@0.0.1 build
+> astro build
+
+09:20:28 [content] Syncing content
+09:20:28 [content] Synced content
+09:20:28 [types] Generated 24ms
+09:20:28 [build] output: "static"
+09:20:28 [build] mode: "static"
+09:20:28 [build] directory: /Users/borjagodoy/projects/personal/DigitalLirycsSolution/BernaPerles/dist/
+09:20:28 [build] adapter: @astrojs/vercel
+09:20:28 [build] Collecting build info...
+09:20:28 [build] ✓ Completed in 36ms.
+09:20:28 [build] Building static entrypoints...
+09:20:29 [vite] ✓ built in 1.14s
+09:20:29 [build] ✓ Completed in 1.16s.
+
+ building client (vite) 
+09:20:29 [vite] transforming...
+09:20:30 [vite] ✓ 16 modules transformed.
+09:20:30 [vite] rendering chunks...
+09:20:30 [vite] computing gzip size...
+09:20:30 [vite] dist/_astro/index.B4l80GFz.js                                                2.30 kB │ gzip:   1.04 kB
+09:20:30 [vite] dist/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CQFiFTFJ.js   13.11 kB │ gzip:   4.54 kB
+09:20:30 [vite] dist/_astro/page.zS3XR9NK.js                                               788.99 kB │ gzip: 161.49 kB
+09:20:30 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+09:20:30 [vite] ✓ built in 615ms
+
+ generating static routes 
+09:20:30 ▶ src/pages/en/[...slug].astro
+09:20:30   ├─ /en/contacto/index.html (+69ms) 
+09:20:30   ├─ /en/actuaciones/index.html (+68ms) 
+09:20:30   ├─ /en/multimedia/index.htmlMULTIMEDIA GALLERY BLOK DATA:  {
+  "_uid": "9455ca4e-b574-454c-b9f2-1880a8112b6b",
+  "component": "multimedia_gallery_section",
+  "video_items": [
+    {
+      "_uid": "5bae8a5f-786a-496d-98c6-3151e3ee7e95",
+      "type": "video",
+      "width": "",
+      "caption": "Exemplo de descripción del video - Teatro de ejemplo",
+      "component": "gallery_item",
+      "video_url": {
+        "id": "",
+        "url": "https://www.youtube.com/watch?v=9VCI3G2t4_0",
+        "linktype": "url",
+        "fieldtype": "multilink",
+        "cached_url": "https://www.youtube.com/watch?v=9VCI3G2t4_0"
+      },
+      "media_file": {
+        "id": 157743410865573,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/725x400/3b60b9004d/bernaperles-manon.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    }
+  ],
+  "photos_items": [
+    {
+      "_uid": "a7670d3d-736e-4716-bf95-452f7b430001",
+      "tile": "Estudio",
+      "component": "photos_section",
+      "photos_list": [
+        {
+          "_uid": "c17124e9-f9d9-4669-a9b6-dc6f1a4b08a9",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591304479660,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/221c097943/berna-perles-gemma-escribano-17b.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        },
+        {
+          "_uid": "6ef2dd03-e143-4109-b1f2-f677f91825f5",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591305003951,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/269706c0af/berna-perles-gemma-escribano-13.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        }
+      ]
+    }
+  ],
+  "photo_tab_label": "Fotos",
+  "video_tab_label": "Videos"
+}
+ (+65ms) 
+09:20:30   ├─ /en/biografia/index.html (+63ms) 
+09:20:30   ├─ /en/configuracion-general/index.html (+30ms) 
+09:20:30   ├─ /en/index.html (+64ms) 
+09:20:30   └─ /en/home/index.html (+1ms) 
+09:20:30 ▶ src/pages/[...slug].astro
+09:20:31   ├─ /contacto/index.html (+110ms) 
+09:20:31   ├─ /actuaciones/index.html (+96ms) 
+09:20:31   ├─ /multimedia/index.htmlMULTIMEDIA GALLERY BLOK DATA:  {
+  "_uid": "9455ca4e-b574-454c-b9f2-1880a8112b6b",
+  "component": "multimedia_gallery_section",
+  "video_items": [
+    {
+      "_uid": "5bae8a5f-786a-496d-98c6-3151e3ee7e95",
+      "type": "video",
+      "width": "",
+      "caption": "Exemplo de descripción del video - Teatro de ejemplo",
+      "component": "gallery_item",
+      "video_url": {
+        "id": "",
+        "url": "https://www.youtube.com/watch?v=9VCI3G2t4_0",
+        "linktype": "url",
+        "fieldtype": "multilink",
+        "cached_url": "https://www.youtube.com/watch?v=9VCI3G2t4_0"
+      },
+      "media_file": {
+        "id": 157743410865573,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/725x400/3b60b9004d/bernaperles-manon.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    }
+  ],
+  "photos_items": [
+    {
+      "_uid": "a7670d3d-736e-4716-bf95-452f7b430001",
+      "tile": "Estudio",
+      "component": "photos_section",
+      "photos_list": [
+        {
+          "_uid": "c17124e9-f9d9-4669-a9b6-dc6f1a4b08a9",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591304479660,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/221c097943/berna-perles-gemma-escribano-17b.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        },
+        {
+          "_uid": "6ef2dd03-e143-4109-b1f2-f677f91825f5",
+          "type": "image",
+          "width": "",
+          "caption": "",
+          "component": "gallery_item",
+          "video_url": {
+            "id": "",
+            "url": "",
+            "linktype": "story",
+            "fieldtype": "multilink",
+            "cached_url": ""
+          },
+          "media_file": {
+            "id": 161591305003951,
+            "alt": "",
+            "name": "",
+            "focus": "",
+            "title": "",
+            "source": "",
+            "filename": "https://a.storyblok.com/f/291328199954300/7008x4672/269706c0af/berna-perles-gemma-escribano-13.jpg",
+            "copyright": "",
+            "fieldtype": "asset",
+            "meta_data": {},
+            "is_external_url": false
+          }
+        }
+      ]
+    }
+  ],
+  "photo_tab_label": "Fotos",
+  "video_tab_label": "Videos"
+}
+ (+63ms) 
+09:20:31   ├─ /biografia/index.htmlBIOGRAFIA BLOK DATA:
+ {
+  "_uid": "dd011bce-44e5-497d-a907-8b818a457284",
+  "body": [
+    {
+      "_uid": "b6e60425-8ec9-41b6-ba3a-a3a99887eb32",
+      "cita": "\"El arte es la voz del alma\"",
+      "label": "Soprano",
+      "title": "Biografía",
+      "component": "biography_hero",
+      "description": "Una voz que navega entre la técnica impecable y la emoción profunda, Berna Perles se ha consolidado como una de las sopranos más destacadas de su generación.",
+      "portrait_image": {
+        "id": 159746145106109,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/4579x6868/43a90b6cd0/berna-perles-gemma-escribano-18b.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    },
+    {
+      "_uid": "4324f198-845f-4e00-9656-4141fede2d95",
+      "image": {
+        "id": 157743410865573,
+        "alt": "",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/291328199954300/725x400/3b60b9004d/bernaperles-manon.png",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      "title": "Trayectoría ",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "La formación de Berna Perles se fundamenta en la excelencia académica, habiéndose perfeccionado en instituciones de prestigio mundial como la Accademia Nazionale di Santa Cecilia en Roma, bajo la tutela de figuras legendarias del canto.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Su debut en los escenarios más importantes de Europa marcó el inicio de una carrera meteórica. Ha interpretado roles principales en obras maestras como La Traviata, Le Nozze di Figaro y Don Giovanni, recibiendo el elogio unánime de la crítica por su fraseo aristocrático y su presencia escénica magnética.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A lo largo de su trayectoria, ha colaborado con directores de orquesta de renombre internacional y ha pisado los escenarios del Teatro Real de Madrid, el Gran Teatre del Liceu de Barcelona y salas de concierto en Viena, Roma y París.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "component": "biography_trajectory_section"
+    },
+    {
+      "_uid": "4435bab8-a163-4567-a801-fc68f744fb30",
+      "title": "Roles Destacados",
+      "component": "featured_roles_section",
+      "roles_list": [
+        {
+          "_uid": "8b7e679f-f938-4260-ad7d-a711e12c161c",
+          "component": "featured_role_item",
+          "role_name": "Violetta Valéry",
+          "opera_info": "La Traviata — G. Verdi",
+          "description": "Una interpretación cargada de matices que explora la fragilidad y la fuerza del personaje."
+        },
+        {
+          "_uid": "16963f50-688a-4b69-b8d8-a31171794253",
+          "component": "featured_role_item",
+          "role_name": "Contessa d'Almaviva",
+          "opera_info": "Le Nozze di Figaro — W.A. Mozart",
+          "description": "La elegancia mozartiana elevada a su máxima expresión vocal y dramática."
+        },
+        {
+          "_uid": "1191dc5d-0a19-4401-a9f7-46a6222703bf",
+          "component": "featured_role_item",
+          "role_name": "Mimì",
+          "opera_info": "La Bohème — G. Puccini",
+          "description": "Pura sensibilidad lírica en uno de los papeles más amados del repertorio pucciniano."
+        }
+      ]
+    },
+    {
+      "_uid": "2ed3acf8-1a78-4f42-b2c4-9f9c03e12b64",
+      "label": "Reconocimientos",
+      "headline": "Premios y Reconocimientos",
+      "component": "award_section",
+      "award_list": [
+        {
+          "_uid": "441042fd-ad26-417e-8bbc-27c0cb94edaf",
+          "year": "2021",
+          "title": "Premio Ópera Actual",
+          "component": "award_item",
+          "description": "Mejor Cantante Revelación del año por su trayectoria nacional."
+        },
+        {
+          "_uid": "cfc00a41-4262-428f-83b0-e036ab25b66b",
+          "year": "2018",
+          "title": "Concurso Internacional de Canto",
+          "component": "award_item",
+          "description": "Primer Premio y Premio del Público en el certamen de Logroño."
+        },
+        {
+          "_uid": "96152ff5-ff73-4061-9305-4d9e9486f88b",
+          "year": "2016",
+          "title": "Certamen Nuevas Voces",
+          "component": "award_item",
+          "description": "Finalista y mención especial en el Teatro de la Maestranza de Sevilla."
+        }
+      ]
+    }
+  ],
+  "og_image": {
+    "id": 159746145106109,
+    "alt": "",
+    "name": "",
+    "focus": "",
+    "title": "",
+    "source": "",
+    "filename": "https://a.storyblok.com/f/291328199954300/4579x6868/43a90b6cd0/berna-perles-gemma-escribano-18b.jpg",
+    "copyright": "",
+    "fieldtype": "asset",
+    "meta_data": {},
+    "is_external_url": false
+  },
+  "component": "page",
+  "meta_title": "Biografía | Berna Perles - Soprano",
+  "meta_description": "Conoce la trayectoria artística de la soprano Berna Perles. Descubre su formación, carrera profesional y su consolidación en el panorama lírico nacional e "
+}
+ (+64ms) 
+09:20:31   ├─ /index.html (+106ms) 
+09:20:31   └─ /home/index.html (+1ms) 
+09:20:31 ✓ Completed in 1.19s.
+
+09:20:31 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+09:20:31 [@astrojs/vercel] Copying static files to .vercel/output/static
+09:20:31 [build] 13 page(s) built in 3.03s
+09:20:31 [build] Complete!

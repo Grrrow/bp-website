@@ -1,0 +1,121 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+
+const roleName = blok.role_name || '';
+const operaTitle = blok.opera_title || '';
+const linkUrl = blok.enlace?.cached_url || blok.enlace?.url || '';
+
+// Determinar si hay un link válido
+const hasLink = linkUrl.trim().length > 0 && linkUrl !== '#';
+// Si es un link a otra página interna o un enlace externo, en este caso los videos o links externos conviene abrirlos en pestaña nueva
+const isExternal = hasLink && (linkUrl.startsWith('http') || linkUrl.startsWith('//'));
+---
+
+<div {...storyblokEditable(blok)} class="repertoire-role-item">
+  {roleName && (
+    hasLink ? (
+      <a 
+        href={linkUrl} 
+        target={isExternal ? "_blank" : "_self"} 
+        rel={isExternal ? "noopener noreferrer" : ""} 
+        class="role-name is-link"
+        aria-label={`Ver más sobre ${roleName}`}
+      >
+        {roleName}
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="link-icon"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+    ) : (
+      <span class="role-name">{roleName}</span>
+    )
+  )}
+  
+  {roleName && operaTitle && <span class="separator">—</span>}
+  {operaTitle && <span class="opera-title">{operaTitle}</span>}
+</div>
+
+<style>
+  .repertoire-role-item {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on very small screens */
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    line-height: 1.5;
+  }
+
+  .role-name {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    color: var(--color-primary);
+    font-weight: 400;
+  }
+
+  /* Link Specific Styles */
+  a.role-name.is-link {
+    text-decoration: none;
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  
+  a.role-name.is-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-primary);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  a.role-name.is-link:hover {
+    opacity: 0.8;
+  }
+
+  a.role-name.is-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .link-icon {
+    opacity: 0.5;
+    transition: transform 0.3s ease;
+  }
+
+  a.role-name.is-link:hover .link-icon {
+    transform: translate(2px, -2px);
+    opacity: 1;
+  }
+
+  .separator {
+    color: var(--color-on-surface);
+    opacity: 0.3;
+    font-size: 0.9rem;
+    padding: 0 0.15rem;
+  }
+
+  .opera-title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    opacity: 0.85;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .role-name {
+      font-size: 1.05rem;
+    }
+    .opera-title {
+      font-size: 0.95rem;
+    }
+  }
+</style>
