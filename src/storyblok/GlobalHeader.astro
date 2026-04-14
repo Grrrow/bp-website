@@ -88,13 +88,13 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
   
   .global-header.menu-open {
     position: fixed;
-    background-color: var(--color-surface);
+    background-color: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     height: 100vh;
     padding-bottom: 2rem;
     overflow-y: auto;
-    --header-text-color: var(--color-on-surface);
+    --header-text-color: #ffffff; /* Fija herencia en hijos de este contenedor a blanco */
   }
 
   .nav-container {
@@ -254,13 +254,13 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      background-color: var(--color-surface);
+      background-color: rgba(0, 0, 0, 0.95);
     }
     
     @supports (backdrop-filter: blur(15px)) {
       .global-header.menu-open .header-items-wrapper {
-        background-color: var(--color-surface);
-        opacity: 0.98;
+        background-color: rgba(0, 0, 0, 0.85);
+        opacity: 1;
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
       }
@@ -286,25 +286,25 @@ const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en' || Ast
       opacity: 1;
     }
 
-    /* Restore the child NavItem styles to respect theme */
+    /* Forzar los enlaces internos del dropdown a blanco independientemente del tema base */
     .global-header.menu-open :global(.nav-link) {
       font-family: var(--font-display) !important;
       font-size: clamp(2rem, 8vw, 3rem) !important;
       font-weight: 300 !important;
       text-transform: none !important;
       letter-spacing: 0.05em !important;
-      color: var(--color-on-surface) !important;
+      color: #ffffff !important;
     }
     
     .global-header.menu-open :global(.nav-link.active) {
       color: var(--color-primary) !important;
     }
 
-    /* Force Language & Theme Toggle styles to respect theme */
+    /* Force Language & Theme Toggle styles to respect dark dropdown */
     .global-header.menu-open :global(.language-picker),
     .global-header.menu-open :global(.theme-toggle) {
-      color: var(--color-on-surface) !important;
-      border-color: var(--color-outline-variant) !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
     }
 
     /* Scale language picker significantly */
